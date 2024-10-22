@@ -37,41 +37,41 @@ dir /S /B *.c > compile.txt
 
 :: Going through each file and run
 :: it through the gcc compiler.
-for /f %%i in (compile.txt) do (
+::for /f %%i in (compile.txt) do (
     :: if file is at eof or
     :: there are no files found.
-    if [%%i] == [] goto :cpp
+ ::   if [%%i] == [] goto :cpp
     
     :: run the compiler and create
     :: object files to link later on.
-    gcc -o %%~ni.obj -c %%i
-)
+::    gcc -o %%~ni.obj -c %%i
+::)
 
 :: ----------------------------------------------------------
 :: compiling all CPP files with the g++ compiler.
 :: ----------------------------------------------------------
-:cpp
+::cpp
 
 :: Create the compile.txt with all
 :: the cpp source code files.
-dir /S /B *.cpp > compile.txt
+::dir /S /B *.cpp > compile.txt
 
 :: Going through each file and run
 :: it through the gcc compiler.
-for /f %%i in (compile.txt) do (
+::for /f %%i in (compile.txt) do (
     ::if file is at eof or
     :: there are no files found.
-    if [%%i] == [] goto :last_command
+::    if [%%i] == [] goto :last_command
 
     :: run the compiler and create
     :: object files to link later on.
-    g++ -o %%~ni.obj -c %%i
-)
+::    g++ -o %%~ni.obj -c %%i
+::)
 
 :: ----------------------------------------------------------
 :: Section :last_command is just cleaning up after work.
 :: ----------------------------------------------------------
-:last_command
+::last_command
 
 :: delete all temporary created files
-del compile.txt
+::del compile.txt
