@@ -47,6 +47,19 @@ typedef struct {
 } Version;
 
 // ---------------------------------------------------------------------------------------------------------------
+// The create_version function is a set of instructions that takes two numbers as input. These numbers represent
+// the major and minor parts of a version number, respectively. The function then constructs a Version object
+// using these two numbers. The major and minor numbers are stored within this Version object. Once this Version
+// object is created, it is then returned by the function. This Version object can be used to represent and keep
+// track of the version number of a software or a product. The major part of the version usually indicates
+// significant changes or updates, while the minor part indicates smaller updates or bug fixes.
+//
+// @param int major - Major build number.
+// @param int minor - Minor build number.
+// ---------------------------------------------------------------------------------------------------------------
+Version create_version(int major, int minor);
+
+// ---------------------------------------------------------------------------------------------------------------
 // The get_major function is like a question you ask to the Version object. The question is: “What is your major
 // version number?”
 //
