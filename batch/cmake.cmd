@@ -46,12 +46,12 @@ shift
 shift
 
 if not "%FILENAME%"=="" (
-    echo Compiling %FILENAME%...
-    %COMPILER% %FILENAME% %* %CFLAGS% -o %FILENAME:~0,-2%%OUTPUT%
+    echo Compiling %COMPILER% -c %FILENAME% -o %FILENAME:~0,-2%%OUTPUT%
+    %COMPILER% -c %FILENAME% -o %FILENAME:~0,-2%%OUTPUT%
 ) else (
     for %%f in (*.%EXT%) do (
-        echo Compiling %%f...
-        %COMPILER% %%f %CFLAGS% -o %%~nf%OUTPUT%
+        echo Compiling %COMPILER% %CFLAGS% %%f -o %%~nf%OUTPUT%
+        %COMPILER% %CFLAGS% %%f -o %%~nf%OUTPUT%
     )
 )
 
