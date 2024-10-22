@@ -45,11 +45,11 @@
 // ------------------------------------------------------------------------------------------------------------------
 int main (int argc, char **argv)
 {
-    Version v = create_version(0, 2);
-    char buffer[6];
-    to_string(v, buffer);
+//    Version v = create_version(0, 2);
+//    char buffer[6];
+//    to_string(v, buffer);
 
-    printf("cHelloWorld Verion %s.\n", buffer);
+//    printf("cHelloWorld Verion %s.\n", buffer);
     printf("Hello C World!\n\n");
     return 0;
 }
