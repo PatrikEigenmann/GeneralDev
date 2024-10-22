@@ -1,5 +1,5 @@
 /* ***************************************************************************************************************
- * cVersion.h - Let’s think of the cVersion.h file as a blueprint for a machine that makes labels for different
+ * cVersion.c - Let’s think of the cVersion.h file as a blueprint for a machine that makes labels for different
  * versions of a product.
  * 
  * Imagine you’re a manufacturer who produces different versions of a product. Each version of the product has

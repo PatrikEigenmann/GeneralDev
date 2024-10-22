@@ -1,81 +1,58 @@
 @echo off
 
-:: ----------------------------------------------------------
-:: cmake.cmd - batch script to compile all *.c and all *.cpp
-:: files in the active folder. c-files will be compiled with
-:: the gcc compiler and the cpp-files will be compiled with
-:: the g++ compiler. Both compilers will generate .obj files,
-:: which later on can be linked into executables.
-:: 
-:: TODO: Make the search for *.c or *.cpp recursive. Here is
-:: where I'm struggeling with. If I start creating subfolders
-:: for my libraries, as example my_libs\utils.h & my_libs\utils.c
-:: I probably overcomplicate everything. So, I'm not sure if
-:: I'll implement a recursive search in this script.
-::
-:: TODO: clink.cmd. The linker script. I have some Ideas;
-:: <clink.cmd /[c:cpp] main my_lib1 my_lib2 my_lib3 ...> would
-:: be an idea, which will create the main.exe with all libs
-:: linked together. For now, I do it by hand which is:
-:: "gcc main.obj my_lib1.obj my_lib2.obj my_lib3.obj -o main"
-:: ----------------------------------------------------------
+:: ------------------------------------------------------------------------------------------
+:: cmake.cmd - batch script to compile all *.c or all *.cpp files, or a specific .c/.cpp file
+:: in the active folder. c-files will be compiled with the gcc compiler and the cpp-files will
+:: be compiled with the g++ compiler. Both compilers will generate .obj files, which later on
+:: can be linked into executables. If there are libraries to link to the executable, the libs
+:: can be added at the end as parameters.
+:: ------------------------------------------------------------------------------------------
 :: author:     Patrik Eigenmann
 :: email:      p.eigenmann@gmx.net
-:: ----------------------------------------------------------
+:: ------------------------------------------------------------------------------------------
 :: Change Log:
-:: Saturday 2023-05-27      File created.
-:: Sunday   2023-05-28      Clean up script and add comments.
-:: ----------------------------------------------------------
+:: Saturday 2023-05-27 File created.                                            Version 00.01
+:: Sunday   2023-05-28 Clean up script and add comments.                        Version 00.02
+:: Tuesday  2024-10-22 Recreated the script.                                    Version 00.03
+:: ------------------------------------------------------------------------------------------
 
-:: ----------------------------------------------------------
-:: compiling all C files with the gcc compiler.
-:: ----------------------------------------------------------
+setlocal
 
-:: Create the compile.txt with all
-:: the C source code files.
-dir /S /B *.c > compile.txt
+if "%1"=="/c" (
+    set "COMPILER=gcc"
+    set "EXT=c"
+) else if "%1"=="/cpp" (
+    set "COMPILER=g++"
+    set "EXT=cpp"
+) else (
+    echo Usage: cmake.cmd [/c | /cpp] [/exe | /o] [filename.extension] [additional objects...]
+    exit /b 1
+)
 
-:: Going through each file and run
-:: it through the gcc compiler.
-::for /f %%i in (compile.txt) do (
-    :: if file is at eof or
-    :: there are no files found.
-<<<<<<< HEAD
-::    if [%%i] == [] goto :cpp
-=======
- ::   if [%%i] == [] goto :cpp
->>>>>>> f2835381cc8ade6e6493e5f6e41572cf7836bbf0
-    
-    :: run the compiler and create
-    :: object files to link later on.
-::    gcc -o %%~ni.obj -c %%i
-::)
+if "%2"=="/exe" (
+    set "OUTPUT=.exe"
+    set "CFLAGS="
+) else if "%2"=="/o" (
+    set "OUTPUT=.o"
+    set "CFLAGS=-c"
+) else (
+    echo Usage: cmake.cmd [/c | /cpp] [/exe | /o] [filename.extension] [additional objects...]
+    exit /b 1
+)
 
-:: ----------------------------------------------------------
-:: compiling all CPP files with the g++ compiler.
-:: ----------------------------------------------------------
-::cpp
+set "FILENAME=%3"
+shift
+shift
+shift
 
-:: Create the compile.txt with all
-:: the cpp source code files.
-::dir /S /B *.cpp > compile.txt
+if not "%FILENAME%"=="" (
+    echo Compiling %FILENAME%...
+    %COMPILER% %FILENAME% %* %CFLAGS% -o %FILENAME:~0,-2%%OUTPUT%
+) else (
+    for %%f in (*.%EXT%) do (
+        echo Compiling %%f...
+        %COMPILER% %%f %CFLAGS% -o %%~nf%OUTPUT%
+    )
+)
 
-:: Going through each file and run
-:: it through the gcc compiler.
-::for /f %%i in (compile.txt) do (
-    ::if file is at eof or
-    :: there are no files found.
-::    if [%%i] == [] goto :last_command
-
-    :: run the compiler and create
-    :: object files to link later on.
-::    g++ -o %%~ni.obj -c %%i
-::)
-
-:: ----------------------------------------------------------
-:: Section :last_command is just cleaning up after work.
-:: ----------------------------------------------------------
-::last_command
-
-:: delete all temporary created files
-::del compile.txt
+endlocal
