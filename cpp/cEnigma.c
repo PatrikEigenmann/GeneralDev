@@ -51,7 +51,7 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-#include "cVersion.h"
+#include "mylibs\cVersion.h"
 
 // Size of the alphabet
 #define ALPHABET_SIZE 26
