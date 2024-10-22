@@ -46,4 +46,41 @@ typedef struct {
     int minor;                              // Minor built
 } Version;
 
+// ---------------------------------------------------------------------------------------------------------------
+// The get_major function is like a question you ask to the Version object. The question is: “What is your major
+// version number?”
+//
+// When you ask this question to a Version object (by calling get_major(v) where v is a Version object), it looks
+// inside itself, finds the “major” version number that was stored when it was created, and then gives (returns)
+// that number.
+//
+// So, in simple terms, get_major is a way to get the major version number from a Version object.
+// ---------------------------------------------------------------------------------------------------------------
+int get_major(Version v);
+
+// ---------------------------------------------------------------------------------------------------------------
+// The get_minor function is like asking a Version object about its minor version number.
+//
+// When you call get_minor(v) where v is a Version object, you’re essentially asking, “What is your minor version
+// number?” In response to this question, the Version object checks its minor version number that was stored when
+// it was created, and then gives (returns) that number.
+//
+// So, in simple terms, get_minor is a way to retrieve the minor version number from a Version object.
+// ---------------------------------------------------------------------------------------------------------------
+int get_minor(Version v);
+
+// ---------------------------------------------------------------------------------------------------------------
+// The to_string function is like a translator for the Version object.
+//
+// When you call to_string(v, buffer) where v is a Version object and buffer is a space in memory to store a string,
+// you’re essentially asking, “Can you translate your version number into a string format?”
+//
+// In response to this request, the Version object takes its major and minor version numbers, formats them into a
+// string that looks like “MM.mm” (where MM is the major version number and mm is the minor version number), and then
+// stores this string in the provided buffer.
+//
+// So, in simple terms, to_string is a way to convert the version number of a Version object into a string format.
+// ---------------------------------------------------------------------------------------------------------------
+void to_string(Version v, char* buffer);
+
 #endif
