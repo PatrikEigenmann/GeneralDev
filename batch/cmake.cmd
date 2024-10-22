@@ -40,7 +40,11 @@ dir /S /B *.c > compile.txt
 ::for /f %%i in (compile.txt) do (
     :: if file is at eof or
     :: there are no files found.
+<<<<<<< HEAD
 ::    if [%%i] == [] goto :cpp
+=======
+ ::   if [%%i] == [] goto :cpp
+>>>>>>> f2835381cc8ade6e6493e5f6e41572cf7836bbf0
     
     :: run the compiler and create
     :: object files to link later on.
@@ -50,7 +54,7 @@ dir /S /B *.c > compile.txt
 :: ----------------------------------------------------------
 :: compiling all CPP files with the g++ compiler.
 :: ----------------------------------------------------------
-:cpp
+::cpp
 
 :: Create the compile.txt with all
 :: the cpp source code files.
@@ -71,7 +75,7 @@ dir /S /B *.c > compile.txt
 :: ----------------------------------------------------------
 :: Section :last_command is just cleaning up after work.
 :: ----------------------------------------------------------
-:last_command
+::last_command
 
 :: delete all temporary created files
 ::del compile.txt
