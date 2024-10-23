@@ -8,7 +8,7 @@
 
 void _ls(const char *dir,int op_a,int op_l)
 {
-	//Here we will list the directory
+	//Here we will list the directory 
 	struct dirent *d;
 	DIR *dh = opendir(dir);
 	if (!dh)
