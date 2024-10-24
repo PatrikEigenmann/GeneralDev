@@ -24,12 +24,16 @@
  * ---------------------------------------------------------------------------------------------------------------
  * Thu 2024-10-24 File created and basic functionality programmed.                                  Version: 00.01
  * Thu 2024-10-24 Manpage style help implemented.                                                   Version: 00.02
+ * Thu 2024-10-24 Fixed compiler errors due to including header files and windows specific libs.    Version: 00.03
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <time.h>
+#include <utime.h>
+
 #include "..\mylibs\cVersion.h"
 
 /* ---------------------------------------------------------------------------------------------------------------
@@ -50,7 +54,7 @@
 void show_help() {
 
     // Version control implemented
-    Version v = create_version(0, 2);
+    Version v = create_version(0, 3);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -260,7 +264,8 @@ void copy_directory(const char *source, const char *destination, int preserve, i
         snprintf(src_path, sizeof(src_path), "%s/%s", source, entry->d_name);
         snprintf(dest_path, sizeof(dest_path), "%s/%s", destination, entry->d_name);
 
-        if (entry->d_type == DT_DIR) {
+        struct stat entry_stat;
+        if (stat(src_path, &entry_stat) == 0 && S_ISDIR(entry_stat.st_mode)) {
             if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
                 copy_directory(src_path, dest_path, preserve, interactive, update);
             }
@@ -268,6 +273,8 @@ void copy_directory(const char *source, const char *destination, int preserve, i
             copy_file(src_path, dest_path, preserve, interactive, update);
         }
     }
+
+    closedir(dir);
 }
 
 /* ---------------------------------------------------------------------------------------------------------------
