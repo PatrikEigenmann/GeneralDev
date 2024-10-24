@@ -133,6 +133,144 @@ void show_help() {
 }
 
 /* ---------------------------------------------------------------------------------------------------------------
+ * Meet our pioneering C function, copy_file—a cornerstone of our advanced file management suite designed for the
+ * Windows Command Prompt. This function epitomizes efficiency, enabling users to seamlessly copy files while
+ * maintaining control over various aspects of the process.
+ *
+ * Imagine a utility that not only copies files with precision but also empowers users to preserve file attributes,
+ * interactively manage overwrites, and intelligently update files based on modification dates. The copy_file
+ * function integrates these capabilities, ensuring robust and flexible file operations.
+ *
+ * Engineered to handle critical tasks with ease, copy_file embodies our commitment to delivering powerful yet
+ * accessible tools. It's the ultimate solution for users seeking to enhance their command-line experience,
+ * offering unmatched reliability and performance.
+ *
+ * Crafted with meticulous attention to detail, this function seamlessly blends power and usability, exemplifying
+ * our dedication to cutting-edge software development. Elevate your file management capabilities with copy_file
+ * and experience the pinnacle of command-line efficiency.
+ *
+ * Ready to transform your file management experience? Let’s innovate with copy_file.
+ *
+ * @param source The path to the source file.
+ * @param destination The path to the destination file.
+ * @param preserve Preserve file attributes if set to true.
+ * @param interactive Prompt before overwriting if set to true.
+ * @param update Copy only if the source file is newer than the destination file if set to true.
+ * --------------------------------------------------------------------------------------------------------------- */
+void copy_file(const char *source, const char *destination, int preserve, int interactive, int update) {
+    // Check if update flag is set
+    if (update) {
+        struct stat src_stat, dest_stat;
+        if (stat(source, &src_stat) == 0 && stat(destination, &dest_stat) == 0) {
+            if (difftime(src_stat.st_mtime, dest_stat.st_mtime) <= 0) {
+                return; // Destination is newer or the same age as source
+            }
+        }
+    }
+
+    // Check if interactive flag is set and file exists
+    if (interactive) {
+        FILE *dest_file = fopen(destination, "rb");
+        if (dest_file != NULL) {
+            fclose(dest_file);
+            char response;
+            printf("Overwrite %s? (y/n): ", destination);
+            scanf(" %c", &response);
+            if (response != 'y' && response != 'Y') {
+                return; // User chose not to overwrite
+            }
+        }
+    }
+
+    FILE *src_file = fopen(source, "rb");
+    if (src_file == NULL) {
+        perror("Error opening source file");
+        return;
+    }
+
+    FILE *dest_file = fopen(destination, "wb");
+    if (dest_file == NULL) {
+        perror("Error opening destination file");
+        fclose(src_file);
+        return;
+    }
+
+    char buffer[1024];
+    size_t bytes;
+
+    while ((bytes = fread(buffer, 1, sizeof(buffer), src_file)) > 0) {
+        fwrite(buffer, 1, bytes, dest_file);
+    }
+
+    fclose(src_file);
+    fclose(dest_file);
+
+    // Preserve file attributes if the preserve flag is set
+    if (preserve) {
+        struct stat src_stat;
+        if (stat(source, &src_stat) == 0) {
+            struct utimbuf new_times;
+            new_times.actime = src_stat.st_atime;
+            new_times.modtime = src_stat.st_mtime;
+            utime(destination, &new_times);
+        }
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * Introducing our groundbreaking copy_directory function—a key component of our sophisticated file management
+ * suite for the Windows Command Prompt. This function exemplifies efficiency and precision, enabling users to
+ * seamlessly replicate entire directory structures with unmatched ease.
+ *
+ * Imagine a tool that not only copies directories recursively but also empowers users with options to preserve
+ * file attributes, interactively manage overwrites, and intelligently update files based on modification dates.
+ * The copy_directory function integrates these capabilities to ensure robust, flexible, and user-friendly
+ * directory operations.
+ *
+ * Designed to handle complex tasks effortlessly, copy_directory is our commitment to delivering powerful yet
+ * accessible tools. It's the ultimate solution for users seeking to enhance their command-line experience with
+ * reliable and high-performance file management.
+ *
+ * Crafted with meticulous attention to detail, this function merges power and usability, highlighting our
+ * dedication to cutting-edge software development. Elevate your file and directory management capabilities with
+ * copy_directory and experience the pinnacle of command-line efficiency.
+ *
+ * @param source The path to the source directory.
+ * @param destination The path to the destination directory.
+ * @param preserve Preserve file attributes if set to true.
+ * @param interactive Prompt before overwriting if set to true.
+ * @param update Copy only if the source file is newer than the destination file if set to true.
+ * --------------------------------------------------------------------------------------------------------------- */
+void copy_directory(const char *source, const char *destination, int preserve, int interactive, int update) {
+    struct stat st = {0};
+    if (stat(destination, &st) == -1) {
+        mkdir(destination);
+    }
+
+    DIR *dir = opendir(source);
+    if (dir == NULL) {
+        perror("Error opening source directory");
+        return;
+    }
+
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        char src_path[1024];
+        char dest_path[1024];
+        snprintf(src_path, sizeof(src_path), "%s/%s", source, entry->d_name);
+        snprintf(dest_path, sizeof(dest_path), "%s/%s", destination, entry->d_name);
+
+        if (entry->d_type == DT_DIR) {
+            if (strcmp(entry->d_name, ".") != 0 && strcmp(entry->d_name, "..") != 0) {
+                copy_directory(src_path, dest_path, preserve, interactive, update);
+            }
+        } else {
+            copy_file(src_path, dest_path, preserve, interactive, update);
+        }
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------------------------
  * Meet our transformative C program—a game-changer for file and directory management in the Windows Command
  * Prompt. This dynamic tool, inspired by the Unix cp command, revolutionizes how users interact with their file
  * systems, combining simplicity with robust functionality.
