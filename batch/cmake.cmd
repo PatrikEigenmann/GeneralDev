@@ -1,5 +1,4 @@
 @echo off
-
 :: ------------------------------------------------------------------------------------------
 :: cmake.cmd - batch script to compile all *.c or all *.cpp files, or a specific .c/.cpp file
 :: in the active folder. c-files will be compiled with the gcc compiler and the cpp-files will
@@ -14,45 +13,21 @@
 :: Saturday 2023-05-27 File created.                                            Version 00.01
 :: Sunday   2023-05-28 Clean up script and add comments.                        Version 00.02
 :: Tuesday  2024-10-22 Recreated the script.                                    Version 00.03
+:: Friday   2024-10-25 Reprogrammed the script. Now it's only handling c files. Version 00.04
 :: ------------------------------------------------------------------------------------------
 
 setlocal
 
-if "%1"=="/c" (
-    set "COMPILER=gcc"
-    set "EXT=c"
-) else if "%1"=="/cpp" (
-    set "COMPILER=g++"
-    set "EXT=cpp"
-) else (
-    echo Usage: cmake.cmd [/c | /cpp] [/exe | /o] [filename.extension] [additional objects...]
+if "%~1"=="" (
+    echo Usage: cmake.cmd library_files...
     exit /b 1
 )
 
-if "%2"=="/exe" (
-    set "OUTPUT=.exe"
-    set "CFLAGS="
-) else if "%2"=="/o" (
-    set "OUTPUT=.o"
-    set "CFLAGS=-c"
-) else (
-    echo Usage: cmake.cmd [/c | /cpp] [/exe | /o] [filename.extension] [additional objects...]
-    exit /b 1
-)
+set "LIBS=%*"
 
-set "FILENAME=%3"
-shift
-shift
-shift
-
-if not "%FILENAME%"=="" (
-    echo Compiling %COMPILER% -c %FILENAME% -o %FILENAME:~0,-2%%OUTPUT%
-    %COMPILER% -c %FILENAME% -o %FILENAME:~0,-2%%OUTPUT%
-) else (
-    for %%f in (*.%EXT%) do (
-        echo Compiling %COMPILER% %CFLAGS% %%f -o %%~nf%OUTPUT%
-        %COMPILER% %CFLAGS% %%f -o %%~nf%OUTPUT%
-    )
+for %%f in (*.c) do (
+    echo Compiling %%f...
+    gcc %%f %LIBS% -o %%~nf.exe
 )
 
 endlocal
