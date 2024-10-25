@@ -74,9 +74,9 @@ void show_help() {
 
     fprintf(file, "NAME\n");
     fprintf(file, "       cp Version: %s\n", buffer);
-    fprintf(file, "       Meet our latest innovation: a dynamic, user-centric C program\n");
-    fprintf(file, "       designed to elevate the command-line experience within the\n");
-    fprintf(file, "       Windows Command Prompt. This program, a sophisticated enhancement\n");
+    fprintf(file, "       Meet our latest innovation: a dynamic, user-centric command-line\n");
+    fprintf(file, "       tool designed to elevate the terminal experience within the\n");
+    fprintf(file, "       Windows command prompt. This program, a sophisticated enhancement\n");
     fprintf(file, "       inspired by the Unix cp command, streamlines file and directory\n");
     fprintf(file, "       management with unparalleled precision and efficiency.\n");
     fprintf(file, "\n");
