@@ -11,7 +11,10 @@
  * Engineered to be both powerful and accessible, this utility empowers users to manage and explore their file
  * systems with newfound ease. Say goodbye to the cumbersome default dir command—welcome to a sleek, modern, and
  * highly functional directory listing tool. Ready to elevate your command-line experience? Dive into productivity
- * with our refined ls utility. 
+ * with our refined ls utility.
+ *
+ * compile instruction:
+ * gcc ls.c ..\mylibs\cVersion.o -o ls.exe
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net

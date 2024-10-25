@@ -93,7 +93,7 @@ void show_help() {
     fprintf(file, "       is not just a utility; it's a leap towards a more efficient,\n");
     fprintf(file, "       productive, and user-friendly command-line environment.\n");
     fprintf(file, "\n");
-    fprintf(file, "       Crafted with meticulous attention to detail, our C program\n");
+    fprintf(file, "       Crafted with meticulous attention to detail, our shell tool\n");
     fprintf(file, "       stands as a testament to cutting-edge software development,\n");
     fprintf(file, "       ready to transform the way users interact with their file\n");
     fprintf(file, "       systems. Dive into a new era of command-line excellence with\n");
