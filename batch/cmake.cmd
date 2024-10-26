@@ -1,10 +1,8 @@
 @echo off
 :: ------------------------------------------------------------------------------------------
-:: cmake.cmd - batch script to compile all *.c or all *.cpp files, or a specific .c/.cpp file
-:: in the active folder. c-files will be compiled with the gcc compiler and the cpp-files will
-:: be compiled with the g++ compiler. Both compilers will generate .obj files, which later on
-:: can be linked into executables. If there are libraries to link to the executable, the libs
-:: can be added at the end as parameters.
+:: cmake.cmd - batch script to compile all *.c files in the active folder. The .c files will
+:: compiled with the gcc compiler. If you have libraries to compile with it, just give them
+:: as command line parameters to the script and the gcc compiler will take care of it.
 :: ------------------------------------------------------------------------------------------
 :: author:     Patrik Eigenmann
 :: email:      p.eigenmann@gmx.net
@@ -15,15 +13,12 @@
 :: Tuesday  2024-10-22 Recreated the script.                                    Version 00.03
 :: Friday   2024-10-25 Reprogrammed the script. Now it's only handling c files. Version 00.04
 :: ------------------------------------------------------------------------------------------
-
 setlocal
 
-if "%~1"=="" (
-    echo Usage: cmake.cmd library_files...
-    exit /b 1
+set "LIBS="
+if not "%~1"=="" (
+    set "LIBS=%*"
 )
-
-set "LIBS=%*"
 
 for %%f in (*.c) do (
     echo Compiling %%f...
