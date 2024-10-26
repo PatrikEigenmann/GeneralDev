@@ -170,7 +170,7 @@ void print_help() {
 
     // Temporarly write the help message into
     // /tmp/myhelp.txt file.
-    FILE *file = fopen("/tmp/myhelp.txt", "w");
+    FILE *file = fopen("D:\\bin\\temp\\myhelp.txt", "w");
     if (file == NULL) {
         printf("Error opening file!\n");
         return;
@@ -223,7 +223,7 @@ void print_help() {
 
     // Now we do a system call and use the command less,
     // So we have the effect of scrolling through the message.
-    system("less /tmp/myhelp.txt");
+    system("more D:\\bin\\temp\\myhelp.txt");
 
 }
 

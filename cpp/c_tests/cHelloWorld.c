@@ -35,7 +35,6 @@
  * ***************************************************************************************************************/
 
 #include<stdio.h>
-//#include"cVersion.h"
 
 // ------------------------------------------------------------------------------------------------------------------
 // main - In the vast, uncharted realms of cyberspace, there exists a function. Not just any function, but the main
@@ -44,13 +43,10 @@
 // int argc     - Command argument count
 // char **argv  - Command argument strings
 // ------------------------------------------------------------------------------------------------------------------
-int main (int argc, char **argv)
-{
-//    Version v = create_version(0, 2);
-//    char buffer[6];
-//    to_string(v, buffer);
-
-//    printf("cHelloWorld Verion %s.\n", buffer);
-    printf("Hello C World!\n\n");
+int main (int argc, char **argv) {
+    
+    // Display "Hello C World!" in the terminal.
+    printf("Hello C World!\n");
+    
     return 0;
 }
