@@ -1,8 +1,8 @@
 #! /bin/sh
 # -----------------------------------------------------------------------------------------
-# cmake.sh - batch script to compile all *.c files in the active folder. The .c files will
-# compiled with the gcc compiler. If you have libraries to compile with it, just give them
-# as command line parameters to the script and the gcc compiler will take care of it.
+# cmake.sh - bash script to compile all *.c files in the active folder. The .c files will
+# compiled with the clang compiler. If you have libraries to compile with it, just give them
+# as command line parameters to the script and the clang compiler will take care of it.
 # -----------------------------------------------------------------------------------------
 # Author: Patrik Eigenmann
 # Contact: p.eigenmann@gmx.net
@@ -17,5 +17,5 @@ LIBS="$@"
 
 for file in *.c; do
     echo "Compiling $file..."
-    gcc $file $LIBS -o "${file%.c}.out"
+    clang $file $LIBS -o "${file%.c}.bin"
 done
