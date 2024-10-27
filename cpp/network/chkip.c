@@ -25,6 +25,8 @@
 
 #define MAX_IPS 256
 
+int count = 0;
+
 /* ------------------------------------------------------------------------------------------------
  * print_help - This function is a helper function that prints out the help message for the cEnigma
  * program in man pages style. This message includes but is not limited to:
@@ -108,15 +110,16 @@ void print_help() {
     system("more D:\\bin\\temp\\myhelp.txt");
 }
 
-void ping_ip(const char *ip, char online_ips[MAX_IPS][16], int *count) {
+void ping_ip(const char *ip, char online_ips[MAX_IPS][16]) {
     char command[100];
-    snprintf(command, sizeof(command), "ping -n 1 %s", ip);
+    snprintf(command, sizeof(command), "ping -n 1 -w 2 %s", ip);
     FILE *fp = _popen(command, "r");
     if (fp == NULL) {
         perror("popen failed");
         return;
     }
     char result[100];
+    
     int is_online = 0;
     while (fgets(result, sizeof(result), fp) != NULL) {
         if (strstr(result, "Reply from") != NULL) {
@@ -125,16 +128,17 @@ void ping_ip(const char *ip, char online_ips[MAX_IPS][16], int *count) {
         }
     }
     _pclose(fp);
-    if (is_online && *count < MAX_IPS) {
-        strcpy(online_ips[*count], ip);
-        (*count)++;
+
+    if (is_online && count < MAX_IPS) {
+        strcpy(online_ips[count], ip);
+        (count)++;
     }
 }
 
 void check_range(char *base_ip, int level, char online_ips[MAX_IPS][16]) {
     if (level == 4) {
-        int count = 0;
-        ping_ip(base_ip, online_ips, &count);
+        //int count = 0;
+        ping_ip(base_ip, online_ips/*, &count*/);
         return;
     }
     char ip[30];
@@ -152,13 +156,14 @@ void check_range(char *base_ip, int level, char online_ips[MAX_IPS][16]) {
     }
 }
 
-void print_online_ips(char online_ips[MAX_IPS][16], int count) {
-    printf("+-------------------+\n");
-    printf("| Online IPs        |\n");
-    printf("+-------------------+\n");
+void print_online_ips(char online_ips[MAX_IPS][16]/*, int count*/) {
+    printf("+-----------------+\n");
+    printf("| Online IPs      |\n");
+    printf("+-----------------+\n");
+    
     for (int i = 0; i < count; i++) {
         int ip_length = strlen(online_ips[i]);
-        int dashes = 15 - ip_length; 
+        int dashes = 16 - ip_length; 
 
         printf("| %-s", online_ips[i]);
         for (int j = 0; j < dashes; j++) {
@@ -166,13 +171,13 @@ void print_online_ips(char online_ips[MAX_IPS][16], int count) {
         }
         printf("|\n");
     }
-    printf("+-------------------+\n");
+    printf("+-----------------+\n");
 }
 
 int main(int argc, char *argv[]) {
 
     // Check if the correct number of arguments are provided
-    if(argc != 3 || strcmp(argv[1], "/?") == 0
+    if(argc != 2 || strcmp(argv[1], "/?") == 0
         || strcmp(argv[1], "-?") == 0 || strcmp(argv[1], "-h") == 0
         || strcmp(argv[1], "-H") == 0 || strcmp(argv[1], "-help") == 0) {
         print_help();
@@ -196,12 +201,10 @@ int main(int argc, char *argv[]) {
     }
     char online_ips[MAX_IPS][16] = {{0}};
 
-    int count = 0;
-
     printf("Pinging IP Range |");
     check_range(base_ip, levels, online_ips);
     printf("|\n");
 
-    print_online_ips(online_ips, count);
+    print_online_ips(online_ips/*, _countof(online_ips)*/);
     return 0;
 }
