@@ -16,16 +16,17 @@
  *                result of the ip's found online in an array and display it at the end.
  * Sat 2024-10-26 Inplemented a Progress Bar.                                                       Version: 00.06
  * Sat 2024-10-26 Version Control and help file implemented.                                        Version: 00.07
+ * Sun 2024-10-27 Progress bar implemented.                                                         Version: 00.08
+ * Sun 2024-10-27 Instead of recursive functions, I use the top-down approach.                      Version: 00.09
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "..\mylibs\cVersion.h"
+#include "..\mylibs\cProgress.h"
 
-#define MAX_IPS 256
-
-int count = 0;
+const int IP_MAX = 254;
 
 /* ------------------------------------------------------------------------------------------------
  * print_help - This function is a helper function that prints out the help message for the cEnigma
@@ -88,7 +89,9 @@ void print_help() {
     fprintf(file, "      <IP ADDRESS with * as the wildcard>\n");
     fprintf(file, "      192.168.1.* means checking a range of 254 addresses.\n");
     fprintf(file, "      192.168.*.* means checking a range of 64,516 addresses.\n");
-    fprintf(file, "      Which means it will take hours to check all these addresses.\n");
+    fprintf(file, "                  Which means it will take hours to check all these addresses.\n");
+    fprintf(file, "      192.*.*.*   Triggers the help, because it would have to test so many\n");
+    fprintf(file, "                  ip address, the program would run for days.\n");
     fprintf(file, "\n");
     fprintf(file, "      /?, -?, -h, -H, -help\n");
     fprintf(file, "            Display this help message.\n");
@@ -110,16 +113,51 @@ void print_help() {
     system("more D:\\bin\\temp\\myhelp.txt");
 }
 
-void ping_ip(const char *ip, char online_ips[MAX_IPS][16]) {
+// ---------------------------------------------------------------------------------------------------------------
+// Our count_wildcards function is designed to bring unparalleled efficiency and clarity to your string processing
+// tasks. With its precise algorithm, this function traverses any given string to count the occurrences of a
+// specified wildcard character. Perfect for scenarios where tracking or validating wildcard usage is paramount,
+// count_wildcards ensures that you can manage and manipulate strings with confidence and ease.
+//
+// By integrating count_wildcards, you enhance your ability to analyze and process strings, paving the way for
+// robust data handling and validation mechanisms. It’s a simple yet powerful tool, poised to elevate your
+// programming toolkit.
+//
+// @param str   The string in which to count wildcard characters.
+// @return      The number of wildcard characters found in the string.
+// ---------------------------------------------------------------------------------------------------------------
+int count_wildcards(const char *str) {
+    int count = 0;
+    while (*str) {
+        if (*str == '*') {
+            count++;
+        }
+        str++;
+    }
+    return count;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Our ping_ip function is a game-changer in network diagnostics, designed to efficiently determine the online
+// status of any IP address. By leveraging system ping commands, this function accurately assesses connectivity,
+// providing immediate feedback on network availability. Perfect for network administrators and developers, ping_ip
+// offers a reliable method to verify IP address responsiveness.
+//
+// Incorporate ping_ip into your projects to streamline network checks and maintain high standards of connectivity.
+// With its robust implementation, you can be assured of accurate and timely results.
+//
+// @param ip    The IP address to ping.
+// @return      1 if the IP is online, otherwise 0.
+// ---------------------------------------------------------------------------------------------------------------
+int ping_ip(const char *ip) {
     char command[100];
-    snprintf(command, sizeof(command), "ping -n 1 -w 2 %s", ip);
+    snprintf(command, sizeof(command), "ping -n 1 -w 5 %s", ip);
     FILE *fp = _popen(command, "r");
     if (fp == NULL) {
         perror("popen failed");
-        return;
+        return 0;
     }
     char result[100];
-    
     int is_online = 0;
     while (fgets(result, sizeof(result), fp) != NULL) {
         if (strstr(result, "Reply from") != NULL) {
@@ -128,35 +166,50 @@ void ping_ip(const char *ip, char online_ips[MAX_IPS][16]) {
         }
     }
     _pclose(fp);
-
-    if (is_online && count < MAX_IPS) {
-        strcpy(online_ips[count], ip);
-        (count)++;
-    }
+    return is_online;
 }
 
-void check_range(char *base_ip, int level, char online_ips[MAX_IPS][16]) {
-    if (level == 4) {
-        //int count = 0;
-        ping_ip(base_ip, online_ips/*, &count*/);
-        return;
+// ---------------------------------------------------------------------------------------------------------------
+// Our replace_wildcard function is a revolutionary tool designed to streamline the process of dynamically
+// configuring IP addresses. By replacing wildcard characters with specified values, this function ensures that
+// your network configurations are both flexible and precise. Ideal for scenarios where IP ranges need to be
+// dynamically managed, replace_wildcard offers an efficient solution to adapt and configure network settings on
+// the fly.
+//
+// Incorporate replace_wildcard into your projects to enhance the adaptability and accuracy of your IP management
+// processes. With its straightforward implementation, you can effortlessly handle complex IP configurations with
+// ease.
+//
+// @param ip            The IP address containing the wildcard.
+// @param replacement   The string to replace the wildcard with.
+// @return              A new IP address string with the wildcard replaced.
+// ---------------------------------------------------------------------------------------------------------------
+char *replace_wildcard(const char *ip, const char *replacement) {
+    static char new_ip[30];
+    strcpy(new_ip, ip);
+    char *pos = strchr(new_ip, '*');
+    if (pos) {
+        *pos = '\0';
     }
-    char ip[30];
-    for (int i = 1; i <= 254; i++) {
-        snprintf(ip, sizeof(ip), "%s%d", base_ip, i);
-        if (level < 3) {
-            strcat(ip, ".");
-        }
-        check_range(ip, level + 1, online_ips);
-
-        // Progress indicator
-        if (i % 4 == 0) {
-            printf("=");
-        }
-    }
+    strcat(new_ip, replacement);
+    return new_ip;
 }
 
-void print_online_ips(char online_ips[MAX_IPS][16]/*, int count*/) {
+// ---------------------------------------------------------------------------------------------------------------
+// Our print_online_ips function is designed to deliver unparalleled clarity in network diagnostics, presenting
+// the results of your IP address checks in a structured, visually appealing table. By dynamically adjusting to
+// varying IP address lengths, this function ensures that the display remains clear, precise, and professional.
+// Perfect for network administrators and IT professionals, print_online_ips transforms raw data into insightful
+// information.
+//
+// Integrate print_online_ips into your network tools to enhance the presentation of your diagnostics, making it
+// easier to interpret and act upon the results. With its clean and elegant output, you can ensure that your
+// network status reports are both informative and accessible.
+//
+// @param online_ips    An array of strings containing the online IP addresses.
+// @param count         The number of online IP addresses in the array.
+// ---------------------------------------------------------------------------------------------------------------
+void print_online_ips(char **online_ips, int count) {
     printf("+-----------------+\n");
     printf("| Online IPs      |\n");
     printf("+-----------------+\n");
@@ -174,9 +227,23 @@ void print_online_ips(char online_ips[MAX_IPS][16]/*, int count*/) {
     printf("+-----------------+\n");
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+// Our main function serves as the command center of your network diagnostics tool, orchestrating the seamless
+// execution of all key operations. It handles user input, dynamically configures the scanning range, initiates
+// progress tracking, and processes the results with utmost efficiency. Designed for top-down clarity, this function
+// ensures that every step, from initialization to output, is executed with precision.
+//
+// By leveraging the main function, developers can effortlessly manage complex network diagnostics tasks, ensuring
+// a streamlined and intuitive user experience. It integrates all components harmoniously, reflecting the highest
+// standards of coding excellence.
+//
+// @param argc  The number of command-line arguments.
+// @param argv  The array of command-line arguments.
+// @return      0 on successful completion, 1 on error.
+// ---------------------------------------------------------------------------------------------------------------
 int main(int argc, char *argv[]) {
 
-    // Check if the correct number of arguments are provided
+    // Check if the help was called by command-line arguments
     if(argc != 2 || strcmp(argv[1], "/?") == 0
         || strcmp(argv[1], "-?") == 0 || strcmp(argv[1], "-h") == 0
         || strcmp(argv[1], "-H") == 0 || strcmp(argv[1], "-help") == 0) {
@@ -184,27 +251,69 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    char base_ip[30];
-    snprintf(base_ip, sizeof(base_ip), "%s", argv[1]);
-    int levels = 0;
-    for (int i = 0; i < strlen(base_ip); i++) {
-        if (base_ip[i] == '.') {
-            levels++;
-        } else if (base_ip[i] == '*') {
-            base_ip[i] = '\0';
-            break;
-        }
-    }
-    if (levels > 3) {
-        printf("Invalid IP range\n");
+    int counter = count_wildcards(argv[1]);
+    int range = 0;
+    int online = 0;
+
+    // Check if the ip ranges are manageble if not
+    // just display the help.
+    if (counter == 1) {
+        range = IP_MAX;
+    } else if (counter == 2) {
+        range = IP_MAX * IP_MAX;
+    } else {
+        print_help();
         return 1;
     }
-    char online_ips[MAX_IPS][16] = {{0}};
 
-    printf("Pinging IP Range |");
-    check_range(base_ip, levels, online_ips);
-    printf("|\n");
+    char base_ip[30];
+    strcpy(base_ip, replace_wildcard(argv[1], "\0"));
+    Progress p = create_progress("Pinging IP Range", range, 0);
+    update_progress(p, 0);
 
-    print_online_ips(online_ips/*, _countof(online_ips)*/);
+    // Allocate memory for online IPs
+    char **online_ips = malloc(range * sizeof(char *));
+    for (int i = 0; i < range; i++) {
+        online_ips[i] = malloc(16 * sizeof(char));
+    }
+
+    // Let's dive into the actual process of analyzing the network.
+    switch (counter) {
+        case 1:
+            for (int i = 1; i <= IP_MAX; i++) {
+                char ip_address[30];
+                snprintf(ip_address, sizeof(ip_address), "%s%d", base_ip, i);
+                if (ping_ip(ip_address)) {
+                    strcpy(online_ips[online++], ip_address);
+                }
+                update_progress(p, i);
+            }
+            break;
+        case 2:
+            for (int i = 1; i <= IP_MAX; i++) {
+                for (int j = 1; j <= IP_MAX; j++) {
+                    char ip_address[30];
+                    snprintf(ip_address, sizeof(ip_address), "%s%d.%d", base_ip, i, j);
+                    if (ping_ip(ip_address)) {
+                        strcpy(online_ips[online++], ip_address);
+                    }
+                    update_progress(p, (i - 1) * IP_MAX + j);
+                }
+            }
+            break;
+        default:
+            print_help();
+            return 1;
+    }
+
+    update_progress(p, range + 1);
+    print_online_ips(online_ips, online);
+
+    // Free allocated memory
+    for (int i = 0; i < range; i++) {
+        free(online_ips[i]);
+    }
+    free(online_ips);
+
     return 0;
 }
