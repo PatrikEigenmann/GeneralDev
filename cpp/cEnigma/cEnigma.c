@@ -30,6 +30,10 @@
  * output files. If the operation is encoding, the program reads from a .txt file and writes to
  * a .enc file. If the operation is decoding, the program reads from a .enc file and writes to
  * a .txt file.
+ *
+ * Compile instructions:
+ * For Windows  -> gcc cEnigma.c ..\mylibs\cVersion.o -o cEnigma.exe
+ * For MacOS    -> clang cEnigma.c ..\mylibs\cVersion.o -o cEnigma.bin
  * ***********************************************************************************************
  * Author:      Patrik Eigenmann
  * eMail:       p.eigenmann@gmx.net

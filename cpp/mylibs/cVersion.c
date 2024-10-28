@@ -18,6 +18,10 @@
  * So, in simple terms, the cVersion.h file is a plan for creating a machine that helps keep track of and label
  * different versions of a product. It ensures that each version has a unique label and that the labels are always
  * formatted in the same way, making it easy to tell which version of the product you have.
+ *
+ * Compile instructions:
+ * For Windows  -> gcc - c cVersion.c -o cVersion.o
+ * For MacOS    -> clang - c cVersion.c -o cVersion.o
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net

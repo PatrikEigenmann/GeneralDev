@@ -6,6 +6,10 @@
  * Imagine effortless integration of a progress bar that not only tracks but also visually communicates the
  * advancement of tasks with customizable markers and titles. cProgress empowers developers to maintain clear
  * oversight, enhancing both productivity and user engagement.
+ *
+ * Compile instructions:
+ * For Windows  -> gcc - c cProgress.c -o cProgress.o
+ * For MacOS    -> clang - c cProgress.c -o cProgress.o
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net

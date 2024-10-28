@@ -16,8 +16,8 @@
  * development, ready to transform the way users interact with their file systems. Dive into a new era of
  * command-line excellence with our refined, robust, and highly functional directory management tool.
  *
- * compile instruction:
- * gcc cp.c ..\mylibs\cVersion.o -o cp.exe
+ * Compile instructions:
+ * For Windows  -> gcc cHelloWorld.c -o cHelloWorld.exe
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net

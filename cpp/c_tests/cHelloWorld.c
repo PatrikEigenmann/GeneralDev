@@ -26,6 +26,10 @@
  * was a small step for the program, but a giant leap for the world of computing. The simple program had proven that
  * even the smallest message could have a profound impact. And with that, the program ended, leaving behind a world
  * forever changed by its brief existence.
+ *
+ * Compile instructions:
+ * For Windows  -> gcc cHelloWorld.c -o cHelloWorld.exe
+ * For MacOS    -> clang cHelloWorld.c -o cHelloWorld.bin
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net

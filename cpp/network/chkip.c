@@ -4,6 +4,10 @@
  * results are presented in a visually structured table, accommodating varying IP address lengths for utmost
  * clarity. This tool is integral for network administrators, enhancing the accuracy and speed of network
  * diagnostics and management.
+ *
+ * Compile instructions:
+ * For Windows  -> gcc chkip.c ..\mylibs\cVersion.o ..\mylibs\cProgress.o -o chkip.exe
+ * For MacOS    -> clang chkip.c ../mylibs/cVersion.o ../mylibs/cProgress.o -o chkip.bin
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
