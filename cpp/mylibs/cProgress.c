@@ -17,16 +17,34 @@
  * Mon 2024-10-25 File created.                                                                     Version: 00.01
  * Sun 2024-10-27 Small corrections and bug fixes.                                                  Version: 00.02
  * Sun 2024-10-27 Implemented sleep time and the flag if Sleep is needed.                           Version: 00.03
- * Sun 2024-10-27 Corrected Windows and MacOS differences.                                          Version: 00.04
+ * Tue 2024-11-05 Corrected Windows and MacOS differences.                                          Version: 00.04
+ * Tue 2024-11-05 Created the crossplatform version of this library.                                Version: 00.05
  * ***************************************************************************************************************/
 #include "cProgress.h"
 #include <stdio.h>
 
 /* ---------------------------------------------------------------------------------------------------------------
- * Windows: #include <windows.h>
- * MacOS:   #include <unistd.h>
+ * Crossplatform Preprocessor directive:
+ * Windows: #include <windows.h> -> Sleep(miliseconds);
+ * MacOS:   #include <unistd.h>  -> usleep(microseconds); [miliseconds * 1000]
  * --------------------------------------------------------------------------------------------------------------- */
-#include <unistd.h>
+#ifdef _WIN32
+    // Include windows library
+    #include <windows.h>
+
+    // Now create the methode void goToSleep(int miliseconds) so it's Windows compatible.
+    void goToSleep(int miliseconds) {
+        Sleep(miliseconds);
+    }
+#else
+    // Include Unix library
+    #include <unistd.h>
+
+    // Now create the methode void goToSleep(int miliseconds) so it's Windows compatible.
+    void goToSleep(int miliseconds) {
+        usleep(miliseconds * 1000);
+    }
+#endif
 
 const int DIVIDER = 60;     // The DIVIDER defines how many markers are seen in the progress bar.
 
@@ -90,10 +108,6 @@ void update_progress(Progress p, int counter) {
     }
 
     if(p.time > 0) {
-        /* ----------------------------------------------------------------------------------
-         * Windows: Sleep(p.time);
-         * MacOS:   usleep(p.time);
-         * ---------------------------------------------------------------------------------- */
-        usleep(p.time);
+        goToSleep(p.time);
     }
 }
