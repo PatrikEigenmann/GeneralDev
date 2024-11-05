@@ -22,7 +22,7 @@
  * Sat 2024-10-26 Version Control and help file implemented.                                        Version: 00.07
  * Sun 2024-10-27 Progress bar implemented.                                                         Version: 00.08
  * Sun 2024-10-27 Instead of recursive functions, I use the top-down approach.                      Version: 00.09
- * Mon 2024-11-04 cManPage.h implemented.                                                            Version: 00.10
+ * Mon 2024-11-04 cManPage.h implemented.                                                           Version: 00.10
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,8 +71,7 @@ void print_help() {
 
     char *manpage = NULL;
 
-    // Write the help message in the file.
-    //fprintf(file, "NAME\n");
+    // Write the ManPage style help file.
     append_format(&manpage, "NAME\n");
     append_format(&manpage, "      chkip Version: %s\n", buffer);
     append_format(&manpage, "      Our cutting-edge program efficiently pings and identifies online\n");
@@ -106,8 +105,10 @@ void print_help() {
     append_format(&manpage, "      This is free software: you are free to change and redistribute it.\n");
     append_format(&manpage, "      There is NO WARRANTY, to the extent permitted by law.\n");
 
+    // Create the manpage in the file /temp/chkip.man
     create_manpage("chkip", manpage);
     
+    // Free up the memory.
     free(manpage);
 }
 

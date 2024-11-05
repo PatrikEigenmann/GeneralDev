@@ -32,20 +32,21 @@
  * a .txt file.
  *
  * Compile instructions:
- * For Windows  -> gcc cEnigma.c ..\mylibs\cVersion.o -o cEnigma.exe
- * For MacOS    -> clang cEnigma.c ..\mylibs\cVersion.o -o cEnigma.bin
+ * For Windows  -> gcc cEnigma.c ..\mylibs\cVersion.o ..\mylibs\cManPage.o -o cEnigma.exe
+ * For MacOS    -> clang cEnigma.c ..\mylibs\cVersion.o ..\mylibs\cManPage.o -o cEnigma.bin
  * ***********************************************************************************************
  * Author:      Patrik Eigenmann
  * eMail:       p.eigenmann@gmx.net
  * -----------------------------------------------------------------------------------------------
  * Version Control:
- * Wed 2023-06-07   File created.                                                   Version: 00.01
- * Thu 2023-06-08   Outsourced encryption.                                          Version: 00.02
- * Wed 2024-02-07   Complete overhaul, with implementation of external files.       Version: 00.03
- * Wed 2024-02-07   Help file man pages style implemented.                          Version: 00.04
- * Wed 2024-02-07   Cleaned up the code and comments.                               Version: 00.05
- * Mon 2024-02-12   Version control implemented.                                    Version: 00.06
- * Mon 2024-02-12   Man page help made scrollable.                                  Version: 00.07
+ * Wed 2023-06-07 File created.                                                     Version: 00.01
+ * Thu 2023-06-08 Outsourced encryption.                                            Version: 00.02
+ * Wed 2024-02-07 Complete overhaul, with implementation of external files.         Version: 00.03
+ * Wed 2024-02-07 Help file man pages style implemented.                            Version: 00.04
+ * Wed 2024-02-07 Cleaned up the code and comments.                                 Version: 00.05
+ * Mon 2024-02-12 Version control implemented.                                      Version: 00.06
+ * Mon 2024-02-12 Man page help made scrollable.                                    Version: 00.07
+ * Mon 2024-11-05 cManPage.h implemented. Updates and Bugfixes.                     Version: 00.08
  * -----------------------------------------------------------------------------------------------
  * To Do's:
  * ***********************************************************************************************/
@@ -56,6 +57,7 @@
 #include <stdlib.h>
 
 #include "..\mylibs\cVersion.h"
+#include "..\mylibs\cManPage.h"
 
 // Size of the alphabet
 #define ALPHABET_SIZE 26
@@ -162,7 +164,7 @@ char decode(char ch, char* rotor) {
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 7);
+    Version v = create_version(0, 8);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -172,63 +174,55 @@ void print_help() {
     // correct version number.
     to_string(v, buffer);
 
-    // Temporarly write the help message into
-    // /tmp/myhelp.txt file.
-    FILE *file = fopen("D:\\bin\\temp\\myhelp.txt", "w");
-    if (file == NULL) {
-        printf("Error opening file!\n");
-        return;
-    }
+    char *manpage = NULL;
 
-    // Write the help message in the file.
-    fprintf(file, "NAME\n");
-    fprintf(file, "      cEnigma Version: %s\n", buffer);
-    fprintf(file, "      The Enigma machine was an electromechanical cypher in the World War II used by Nazi Germany.\n");
-    fprintf(file, "      The rotor mechanism of the Enigma machine scrambled the all the 26 letters of the alphabet.\n");
-    fprintf(file, "      In typical use, one person enters text on the Enigma’s keyboard and another person writes down\n");
-    fprintf(file, "      which of the 26 lights above the keyboard illuminated at each key press. If plain text is entered,\n");
-    fprintf(file, "      the illuminated letters are the ciphertext. Entering ciphertext transforms it back into readable \n");
-    fprintf(file, "      plaintext. The rotor mechanism changes the electrical connections between the keys and the lights\n");
-    fprintf(file, "      with each keypress.\n");
-    fprintf(file, "\n");
-    fprintf(file, "SYNOPSIS\n");
-    fprintf(file, "      cEnigma -e/-d <textfile without ending>\n");
-    fprintf(file, "\n");
-    fprintf(file, "DESCRIPTION\n");
-    fprintf(file, "      This program encodes (-e) or decodes (-d) a text\n");
-    fprintf(file, "      file using a simplified Enigma machine emulation.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      -e <textfile without ending>\n");
-    fprintf(file, "            The -e option plus <file without ending> like input\n");
-    fprintf(file, "            will search for a file input.txt in the active folder,\n");
-    fprintf(file, "            and encode the plaintext in it. and save the text into\n");
-    fprintf(file, "            the an encoding file with the same name. As example input.enc.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      -d <encoding file without ending>\n");
-    fprintf(file, "            The -d option plus <file without ending> like input\n");
-    fprintf(file, "            will search for a file input.enc in the active folder,\n");
-    fprintf(file, "            and decode the cyphered text in it, and save the plain text\n");
-    fprintf(file, "            into the a text file with the same name. As example input.txt.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      /?, -?, -h, -H, -help\n");
-    fprintf(file, "            Display this help message.\n");
-    fprintf(file, "\n");
-    fprintf(file, "AUTHOR\n");
-    fprintf(file, "      Patrik Eigenmann (p.eigenmann@gmx.net).\n");
-    fprintf(file, "\n");
-    fprintf(file, "COPYRIGHT\n");
-    fprintf(file, "      Copyright © 2024 Free Software Foundation, Inc. License GPLv3+:\n");
-    fprintf(file, "      GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n");
-    fprintf(file, "      This is free software: you are free to change and redistribute it.\n");
-    fprintf(file, "      There is NO WARRANTY, to the extent permitted by law.\n");
+    // Write the ManPage style help file.
+    append_format(&manpage, "NAME\n");
+    append_format(&manpage, "      cEnigma Version: %s\n", buffer);
+    append_format(&manpage, "      The Enigma machine was an electromechanical cypher in the World War II used by Nazi Germany.\n");
+    append_format(&manpage, "      The rotor mechanism of the Enigma machine scrambled the all the 26 letters of the alphabet.\n");
+    append_format(&manpage, "      In typical use, one person enters text on the Enigma’s keyboard and another person writes down\n");
+    append_format(&manpage, "      which of the 26 lights above the keyboard illuminated at each key press. If plain text is entered,\n");
+    append_format(&manpage, "      the illuminated letters are the ciphertext. Entering ciphertext transforms it back into readable \n");
+    append_format(&manpage, "      plaintext. The rotor mechanism changes the electrical connections between the keys and the lights\n");
+    append_format(&manpage, "      with each keypress.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "SYNOPSIS\n");
+    append_format(&manpage, "      cEnigma -e/-d <textfile without ending>\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "DESCRIPTION\n");
+    append_format(&manpage, "      This program encodes (-e) or decodes (-d) a text\n");
+    append_format(&manpage, "      file using a simplified Enigma machine emulation.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      -e <textfile without ending>\n");
+    append_format(&manpage, "            The -e option plus <file without ending> like input\n");
+    append_format(&manpage, "            will search for a file input.txt in the active folder,\n");
+    append_format(&manpage, "            and encode the plaintext in it. and save the text into\n");
+    append_format(&manpage, "            the an encoding file with the same name. As example input.enc.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      -d <encoding file without ending>\n");
+    append_format(&manpage, "            The -d option plus <file without ending> like input\n");
+    append_format(&manpage, "            will search for a file input.enc in the active folder,\n");
+    append_format(&manpage, "            and decode the cyphered text in it, and save the plain text\n");
+    append_format(&manpage, "            into the a text file with the same name. As example input.txt.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      /?, -?, -h, -H, -help\n");
+    append_format(&manpage, "            Display this help message.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "AUTHOR\n");
+    append_format(&manpage, "      Patrik Eigenmann (p.eigenmann@gmx.net).\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "COPYRIGHT\n");
+    append_format(&manpage, "      Copyright 2024 Free Software Foundation, Inc. License GPLv3+:\n");
+    append_format(&manpage, "      GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n");
+    append_format(&manpage, "      This is free software: you are free to change and redistribute it.\n");
+    append_format(&manpage, "      There is NO WARRANTY, to the extent permitted by law.\n");
 
-    // Now we can close the file.
-    fclose(file);
+    // Create the manpage in the file /temp/cEnigma.man
+    create_manpage("cEnigma", manpage);
 
-    // Now we do a system call and use the command less,
-    // So we have the effect of scrolling through the message.
-    system("more D:\\bin\\temp\\myhelp.txt");
-
+    // Free up the memory.
+    free(manpage);
 }
 
 /* ---------------------------------------------------------------------------------------------------------

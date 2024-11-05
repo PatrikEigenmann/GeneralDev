@@ -17,7 +17,7 @@
  * command-line excellence with our refined, robust, and highly functional directory management tool.
  *
  * Compile instructions:
- * For Windows  -> gcc cHelloWorld.c -o cHelloWorld.exe
+ * For Windows  -> gcc cp.c ..\mylibs\cVersion.c ..\mylibs\cManPage.o -o cp.exe
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
@@ -25,6 +25,7 @@
  * Thu 2024-10-24 File created and basic functionality programmed.                                  Version: 00.01
  * Thu 2024-10-24 Manpage style help implemented.                                                   Version: 00.02
  * Thu 2024-10-24 Fixed compiler errors due to including header files and windows specific libs.    Version: 00.03
+ * Mon 2024-11-05 cManPage.h implemented. New Update and Bug Fixes.                                 Version: 00.04
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,6 +36,7 @@
 #include <utime.h>
 
 #include "..\mylibs\cVersion.h"
+#include "..\mylibs\cManPage.h"
 
 /* ---------------------------------------------------------------------------------------------------------------
  * The show_help function is our top-notch guidance feature, crafted to provide users with clear, intuitive
@@ -54,7 +56,7 @@
 void show_help() {
 
     // Version control implemented
-    Version v = create_version(0, 3);
+    Version v = create_version(0, 4);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -64,76 +66,70 @@ void show_help() {
     // correct version number.
     to_string(v, buffer);
 
-    // Temporarly write the help message into
-    // /tmp/myhelp.txt file.
-    FILE *file = fopen("D:\\bin\\temp\\myhelp.txt", "w");
-    if (file == NULL) {
-        printf("Error opening file!\n");
-        return;
-    }
+    char *manpage = NULL;
 
-    fprintf(file, "NAME\n");
-    fprintf(file, "       cp Version: %s\n", buffer);
-    fprintf(file, "       Meet our latest innovation: a dynamic, user-centric command-line\n");
-    fprintf(file, "       tool designed to elevate the terminal experience within the\n");
-    fprintf(file, "       Windows command prompt. This program, a sophisticated enhancement\n");
-    fprintf(file, "       inspired by the Unix cp command, streamlines file and directory\n");
-    fprintf(file, "       management with unparalleled precision and efficiency.\n");
-    fprintf(file, "\n");
-    fprintf(file, "       Imagine the ease of executing seamless file operations with\n");
-    fprintf(file, "       intuitive options like recursive copying, file attribute preservation,\n");
-    fprintf(file, "       interactive prompts before overwriting, and smart updates\n");
-    fprintf(file, "       based on file modifications. Engineered to be both powerful and\n");
-    fprintf(file, "       accessible, this tool ensures that users can navigate and\n");
-    fprintf(file, "       manipulate their file systems effortlessly.\n");
-    fprintf(file, "\n");
-    fprintf(file, "       Our built-in help feature, accessible with a simple flag,\n");
-    fprintf(file, "       mirrors the clarity and familiarity of Unix man pages,\n");
-    fprintf(file, "       providing users with instant, reliable support. This program\n");
-    fprintf(file, "       is not just a utility; it's a leap towards a more efficient,\n");
-    fprintf(file, "       productive, and user-friendly command-line environment.\n");
-    fprintf(file, "\n");
-    fprintf(file, "       Crafted with meticulous attention to detail, our shell tool\n");
-    fprintf(file, "       stands as a testament to cutting-edge software development,\n");
-    fprintf(file, "       ready to transform the way users interact with their file\n");
-    fprintf(file, "       systems. Dive into a new era of command-line excellence with\n");
-    fprintf(file, "       our refined, robust, and highly functional directory management tool.\n");
-    fprintf(file, "\n");
-    fprintf(file, "SYNOPSIS\n");
-    fprintf(file, "       cp [OPTION]... SOURCE DEST\n");
-    fprintf(file, "       cp [OPTION]... SOURCE... DIRECTORY\n");
-    fprintf(file, "\n");
-    fprintf(file, "DESCRIPTION\n");
-    fprintf(file, "       -r, --recursive\n");
-    fprintf(file, "              Copy directories recursively.\n");
-    fprintf(file, "\n");
-    fprintf(file, "       -p, --preserve\n");
-    fprintf(file, "              Preserve file attributes.\n");
-    fprintf(file, "\n");
-    fprintf(file, "       -i, --interactive\n");
-    fprintf(file, "              Prompt before overwrite\n");
-    fprintf(file, "\n");
-    fprintf(file, "       -u, --update\n");
-    fprintf(file, "              Copy only when the SOURCE file is newer than the destination file.\n");
-    fprintf(file, "\n");
-    fprintf(file, "       -?, --help\n");
-    fprintf(file, "              Display this help and exit.\n");
-    fprintf(file, "\n");
-    fprintf(file, "AUTHOR\n");
-    fprintf(file, "       Patrik Eigenmann (p.eigenmann@gmx.net)\n");
-    fprintf(file, "\n");
-    fprintf(file, "COPYRIGHT\n");
-    fprintf(file, "      Copyright © 2024 Free Software Foundation, Inc. License GPLv3+:\n");
-    fprintf(file, "      GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n");
-    fprintf(file, "      This is free software: you are free to change and redistribute it.\n");
-    fprintf(file, "      There is NO WARRANTY, to the extent permitted by law.\n");
+    // Write the ManPage style help file.
+    append_format(&manpage, "NAME\n");
+    append_format(&manpage, "       cp Version: %s\n", buffer);
+    append_format(&manpage, "       Meet our latest innovation: a dynamic, user-centric command-line\n");
+    append_format(&manpage, "       tool designed to elevate the terminal experience within the\n");
+    append_format(&manpage, "       Windows command prompt. This program, a sophisticated enhancement\n");
+    append_format(&manpage, "       inspired by the Unix cp command, streamlines file and directory\n");
+    append_format(&manpage, "       management with unparalleled precision and efficiency.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "       Imagine the ease of executing seamless file operations with\n");
+    append_format(&manpage, "       intuitive options like recursive copying, file attribute preservation,\n");
+    append_format(&manpage, "       interactive prompts before overwriting, and smart updates\n");
+    append_format(&manpage, "       based on file modifications. Engineered to be both powerful and\n");
+    append_format(&manpage, "       accessible, this tool ensures that users can navigate and\n");
+    append_format(&manpage, "       manipulate their file systems effortlessly.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "       Our built-in help feature, accessible with a simple flag,\n");
+    append_format(&manpage, "       mirrors the clarity and familiarity of Unix man pages,\n");
+    append_format(&manpage, "       providing users with instant, reliable support. This program\n");
+    append_format(&manpage, "       is not just a utility; it's a leap towards a more efficient,\n");
+    append_format(&manpage, "       productive, and user-friendly command-line environment.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "       Crafted with meticulous attention to detail, our shell tool\n");
+    append_format(&manpage, "       stands as a testament to cutting-edge software development,\n");
+    append_format(&manpage, "       ready to transform the way users interact with their file\n");
+    append_format(&manpage, "       systems. Dive into a new era of command-line excellence with\n");
+    append_format(&manpage, "       our refined, robust, and highly functional directory management tool.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "SYNOPSIS\n");
+    append_format(&manpage, "       cp [OPTION]... SOURCE DEST\n");
+    append_format(&manpage, "       cp [OPTION]... SOURCE... DIRECTORY\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "DESCRIPTION\n");
+    append_format(&manpage, "       -r, --recursive\n");
+    append_format(&manpage, "              Copy directories recursively.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "       -p, --preserve\n");
+    append_format(&manpage, "              Preserve file attributes.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "       -i, --interactive\n");
+    append_format(&manpage, "              Prompt before overwrite\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "       -u, --update\n");
+    append_format(&manpage, "              Copy only when the SOURCE file is newer than the destination file.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "       -?, --help\n");
+    append_format(&manpage, "              Display this help and exit.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "AUTHOR\n");
+    append_format(&manpage, "       Patrik Eigenmann (p.eigenmann@gmx.net)\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "COPYRIGHT\n");
+    append_format(&manpage, "      Copyright 2024 Free Software Foundation, Inc. License GPLv3+:\n");
+    append_format(&manpage, "      GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n");
+    append_format(&manpage, "      This is free software: you are free to change and redistribute it.\n");
+    append_format(&manpage, "      There is NO WARRANTY, to the extent permitted by law.\n");
 
-    // Now we can close the file.
-    fclose(file);
+    // Create the manpage in the file /temp/cp.man
+    create_manpage("cp", manpage);
 
-    // Now we do a system call and use the command less,
-    // So we have the effect of scrolling through the message.
-    system("more D:\\bin\\temp\\myhelp.txt");
+    // Free up the memory.
+    free(manpage);
 }
 
 /* ---------------------------------------------------------------------------------------------------------------

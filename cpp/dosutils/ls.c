@@ -14,18 +14,20 @@
  * with our refined ls utility.
  *
  * compile instruction:
- * gcc ls.c ..\mylibs\cVersion.o -o ls.exe
+ * Windows: gcc ls.c ..\mylibs\cVersion.o ..\mylibs\cManPage.o -o ls.exe
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
  * ---------------------------------------------------------------------------------------------------------------
  * Thu 2024-10-24 File created and basic functionality programmed.                                  Version: 00.01
  * Thu 2024-10-24 Manpage style help implemented.                                                   Version: 00.02
+ * Mon 2024-11-04 cManPage implemented. New Updates and Bug Fixes.                                  Version: 00.03
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "..\mylibs\cVersion.h"
+#include "..\mylibs\cManPage.h"
 
 /* ---------------------------------------------------------------------------------------------------------------
  * The show_help function is our top-notch guidance feature, crafted to provide users with clear, intuitive
@@ -45,7 +47,7 @@
 void show_help() {
 
     // Version control implemented
-    Version v = create_version(0, 2);
+    Version v = create_version(0, 3);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -55,64 +57,58 @@ void show_help() {
     // correct version number.
     to_string(v, buffer);
 
-    // Temporarly write the help message into
-    // /tmp/myhelp.txt file.
-    FILE *file = fopen("D:\\bin\\temp\\myhelp.txt", "w");
-    if (file == NULL) {
-        printf("Error opening file!\n");
-        return;
-    }
+    char *manpage = NULL;
 
-    fprintf(file, "NAME\n");
-    fprintf(file, "      ls Version: %s\n", buffer);
-    fprintf(file, "      Introducing our new command-line utility, a sophisticated enhancement\n");
-    fprintf(file, "      of the classic ls command designed for DOS environments. This tool\n");
-    fprintf(file, "      streamlines directory navigation with precision and efficiency, embodying\n");
-    fprintf(file, "      the elegance of simplicity combined with robust functionality. Users can\n");
-    fprintf(file, "      now execute comprehensive directory listings, leveraging switches like -l\n");
-    fprintf(file, "      for detailed views and -a for hidden files.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      The intuitive flag system enables seamless command combinations such as\n");
-    fprintf(file, "      -al, ensuring users get exactly the information they need with minimal\n");
-    fprintf(file, "      effort. Additionally, our user-friendly help feature, accessible via -?,\n");
-    fprintf(file, "      guides you through the command’s capabilities, mirroring the familiarity\n");
-    fprintf(file, "      and ease of Unix man pages.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      Engineered to be both powerful and accessible, this utility empowers users\n");
-    fprintf(file, "      to manage and explore their file systems with newfound ease. Say goodbye\n");
-    fprintf(file, "      to the cumbersome default dir command—welcome to a sleek, modern, and highly\n");
-    fprintf(file, "      functional directory listing tool. Ready to elevate your command-line\n");
-    fprintf(file, "      experience? Dive into productivity with our refined ls utility.\n");
-    fprintf(file, "SYNOPSIS\n");
-    fprintf(file, "      ls [-l\\-a\\-la\\-al\\-?]\n");
-    fprintf(file, "DESCRIPTION\n");
-    fprintf(file, "      -l\n");
-    fprintf(file, "          Using long listing format to display the listing.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      -a\n");
-    fprintf(file, "          All files are shown, even the hidden ones.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      -al\\-la\n");
-    fprintf(file, "          Displaying hidden files and use long listing format.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      /?\\-?\\/H\\-H\\/h\\-h\\/help\\-help\n");
-    fprintf(file, "          Displaying this help and exit.\n");
-    fprintf(file, "\n");
-    fprintf(file, "AUTHOR\n");
-    fprintf(file, "      Patrik Eigenmann (p.eigenmann@gmx.net).\n");
-    fprintf(file, "\n");
-    fprintf(file, "COPYRIGHT\n");
-    fprintf(file, "      Copyright © 2024 Free Software Foundation, Inc. License GPLv3+:\n");
-    fprintf(file, "      GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n");
-    fprintf(file, "      This is free software: you are free to change and redistribute it.\n");
-    fprintf(file, "      There is NO WARRANTY, to the extent permitted by law.\n");
+    // Write the ManPage style help file.
+    append_format(&manpage, "NAME\n");
+    append_format(&manpage, "      ls Version: %s\n", buffer);
+    append_format(&manpage, "      Introducing our new command-line utility, a sophisticated enhancement\n");
+    append_format(&manpage, "      of the classic ls command designed for DOS environments. This tool\n");
+    append_format(&manpage, "      streamlines directory navigation with precision and efficiency, embodying\n");
+    append_format(&manpage, "      the elegance of simplicity combined with robust functionality. Users can\n");
+    append_format(&manpage, "      now execute comprehensive directory listings, leveraging switches like -l\n");
+    append_format(&manpage, "      for detailed views and -a for hidden files.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      The intuitive flag system enables seamless command combinations such as\n");
+    append_format(&manpage, "      -al, ensuring users get exactly the information they need with minimal\n");
+    append_format(&manpage, "      effort. Additionally, our user-friendly help feature, accessible via -?,\n");
+    append_format(&manpage, "      guides you through the command’s capabilities, mirroring the familiarity\n");
+    append_format(&manpage, "      and ease of Unix man pages.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      Engineered to be both powerful and accessible, this utility empowers users\n");
+    append_format(&manpage, "      to manage and explore their file systems with newfound ease. Say goodbye\n");
+    append_format(&manpage, "      to the cumbersome default dir command—welcome to a sleek, modern, and highly\n");
+    append_format(&manpage, "      functional directory listing tool. Ready to elevate your command-line\n");
+    append_format(&manpage, "      experience? Dive into productivity with our refined ls utility.\n");
+    append_format(&manpage, "SYNOPSIS\n");
+    append_format(&manpage, "      ls [-l\\-a\\-la\\-al\\-?]\n");
+    append_format(&manpage, "DESCRIPTION\n");
+    append_format(&manpage, "      -l\n");
+    append_format(&manpage, "          Using long listing format to display the listing.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      -a\n");
+    append_format(&manpage, "          All files are shown, even the hidden ones.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      -al\\-la\n");
+    append_format(&manpage, "          Displaying hidden files and use long listing format.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      /?\\-?\\/H\\-H\\/h\\-h\\/help\\-help\n");
+    append_format(&manpage, "          Displaying this help and exit.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "AUTHOR\n");
+    append_format(&manpage, "      Patrik Eigenmann (p.eigenmann@gmx.net).\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "COPYRIGHT\n");
+    append_format(&manpage, "      Copyright 2024 Free Software Foundation, Inc. License GPLv3+:\n");
+    append_format(&manpage, "      GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n");
+    append_format(&manpage, "      This is free software: you are free to change and redistribute it.\n");
+    append_format(&manpage, "      There is NO WARRANTY, to the extent permitted by law.\n");
 
-    // Now we can close the file.
-    fclose(file);
+    // Create the manpage in the file /temp/ls.man
+    create_manpage("ls", manpage);
 
-    // Now we do a system call and use the command less,
-    // So we have the effect of scrolling through the message.
-    system("more D:\\bin\\temp\\myhelp.txt");
+    // Free up the memory.
+    free(manpage);
 }
 
 /* ---------------------------------------------------------------------------------------------------------------
