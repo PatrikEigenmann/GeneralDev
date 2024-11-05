@@ -9,13 +9,13 @@
 #ifndef CMANPAGE_H
 #define CMANPAGE_H
 
-const char *FILE_EXTENTION = ".man";
-
 typedef struct {
     char *filename;
     char *manual;
 } ManPage;
 
-void create_manpage(char *filenameIn, char *manualIn, ManPage mpIn);
+void create_manpage(char *filenameIn, char *manualIn);
+
+void append_format(char **dest, const char *format, ...);
 
 #endif

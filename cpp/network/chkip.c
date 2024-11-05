@@ -6,8 +6,8 @@
  * diagnostics and management.
  *
  * Compile instructions:
- * For Windows  -> gcc chkip.c ..\mylibs\cVersion.o ..\mylibs\cProgress.o -o chkip.exe
- * For MacOS    -> clang chkip.c ../mylibs/cVersion.o ../mylibs/cProgress.o -o chkip.bin
+ * For Windows  -> gcc chkip.c ..\mylibs\cVersion.o ..\mylibs\cProgress.o ..\mylibs\cManPage.o -o chkip.exe
+ * For MacOS    -> clang chkip.c ../mylibs/cVersion.o ../mylibs/cProgress.o ../mylibs/cProgress.o -o chkip.bin
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
@@ -22,6 +22,7 @@
  * Sat 2024-10-26 Version Control and help file implemented.                                        Version: 00.07
  * Sun 2024-10-27 Progress bar implemented.                                                         Version: 00.08
  * Sun 2024-10-27 Instead of recursive functions, I use the top-down approach.                      Version: 00.09
+ * Mon 2024-11-04 cManPage.h implemented.                                                            Version: 00.10
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,6 +30,7 @@
 
 #include "..\mylibs\cVersion.h"
 #include "..\mylibs\cProgress.h"
+#include "..\mylibs\cManPage.h"
 
 const int IP_MAX = 254;
 
@@ -57,8 +59,8 @@ const int IP_MAX = 254;
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 7);
-    
+    Version v = create_version(0, 10);
+        
     // The buffer is needed to write
     // the correct formated version number.
     char buffer[6];
@@ -67,54 +69,46 @@ void print_help() {
     // correct version number.
     to_string(v, buffer);
 
-    // Temporarly write the help message into
-    // /tmp/myhelp.txt file.
-    FILE *file = fopen("D:\\bin\\temp\\myhelp.txt", "w");
-    if (file == NULL) {
-        printf("Error opening file!\n");
-        return;
-    }
+    char *manpage = NULL;
 
     // Write the help message in the file.
-    fprintf(file, "NAME\n");
-    fprintf(file, "      chkip Version: %s\n", buffer);
-    fprintf(file, "      Our cutting-edge program efficiently pings and identifies online\n");
-    fprintf(file, "      IP addresses within a specified range. It dynamically updates the\n");
-    fprintf(file, "      user on the progress, ensuring a seamless and transparent experience.\n");
-    fprintf(file, "      The results are presented in a visually structured table, accommodating\n");
-    fprintf(file, "      varying IP address lengths for utmost clarity. This tool is integral\n");
-    fprintf(file, "      for network administrators, enhancing the accuracy and speed of network\n");
-    fprintf(file, "      diagnostics and management.\n");
-    fprintf(file, "\n");
-    fprintf(file, "SYNOPSIS\n");
-    fprintf(file, "      chkip <IP ADDRESS with * as the wildcard>\n");
-    fprintf(file, "\n");
-    fprintf(file, "DESCRIPTION\n");
-    fprintf(file, "      <IP ADDRESS with * as the wildcard>\n");
-    fprintf(file, "      192.168.1.* means checking a range of 254 addresses.\n");
-    fprintf(file, "      192.168.*.* means checking a range of 64,516 addresses.\n");
-    fprintf(file, "                  Which means it will take hours to check all these addresses.\n");
-    fprintf(file, "      192.*.*.*   Triggers the help, because it would have to test so many\n");
-    fprintf(file, "                  ip address, the program would run for days.\n");
-    fprintf(file, "\n");
-    fprintf(file, "      /?, -?, -h, -H, -help\n");
-    fprintf(file, "            Display this help message.\n");
-    fprintf(file, "\n");
-    fprintf(file, "AUTHOR\n");
-    fprintf(file, "      Patrik Eigenmann (p.eigenmann@gmx.net).\n");
-    fprintf(file, "\n");
-    fprintf(file, "COPYRIGHT\n");
-    fprintf(file, "      Copyright © 2024 Free Software Foundation, Inc. License GPLv3+:\n");
-    fprintf(file, "      GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n");
-    fprintf(file, "      This is free software: you are free to change and redistribute it.\n");
-    fprintf(file, "      There is NO WARRANTY, to the extent permitted by law.\n");
+    //fprintf(file, "NAME\n");
+    append_format(&manpage, "NAME\n");
+    append_format(&manpage, "      chkip Version: %s\n", buffer);
+    append_format(&manpage, "      Our cutting-edge program efficiently pings and identifies online\n");
+    append_format(&manpage, "      IP addresses within a specified range. It dynamically updates the\n");
+    append_format(&manpage, "      user on the progress, ensuring a seamless and transparent experience.\n");
+    append_format(&manpage, "      The results are presented in a visually structured table, accommodating\n");
+    append_format(&manpage, "      varying IP address lengths for utmost clarity. This tool is integral\n");
+    append_format(&manpage, "      for network administrators, enhancing the accuracy and speed of network\n");
+    append_format(&manpage, "      diagnostics and management.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "SYNOPSIS\n");
+    append_format(&manpage, "      chkip <IP ADDRESS with * as the wildcard>\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "DESCRIPTION\n");
+    append_format(&manpage, "      <IP ADDRESS with * as the wildcard>\n");
+    append_format(&manpage, "      192.168.1.* means checking a range of 254 addresses.\n");
+    append_format(&manpage, "      192.168.*.* means checking a range of 64,516 addresses.\n");
+    append_format(&manpage, "                  Which means it will take hours to check all these addresses.\n");
+    append_format(&manpage, "      192.*.*.*   Triggers the help, because it would have to test so many\n");
+    append_format(&manpage, "                  ip address, the program would run for days.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "      /?, -?, -h, -H, -help\n");
+    append_format(&manpage, "                  Display this help message.\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "AUTHOR\n");
+    append_format(&manpage, "      Patrik Eigenmann (p.eigenmann@gmx.net).\n");
+    append_format(&manpage, "\n");
+    append_format(&manpage, "COPYRIGHT\n");
+    append_format(&manpage, "      Copyright 2024 Free Software Foundation, Inc. License GPLv3+:\n");
+    append_format(&manpage, "      GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.\n");
+    append_format(&manpage, "      This is free software: you are free to change and redistribute it.\n");
+    append_format(&manpage, "      There is NO WARRANTY, to the extent permitted by law.\n");
 
-    // Now we can close the file.
-    fclose(file);
-
-    // Now we do a system call and use the command less,
-    // So we have the effect of scrolling through the message.
-    system("more D:\\bin\\temp\\myhelp.txt");
+    create_manpage("chkip", manpage);
+    
+    free(manpage);
 }
 
 // ---------------------------------------------------------------------------------------------------------------
