@@ -35,7 +35,6 @@
  * eMail:        p.eigenmann@gmx.net
  * ---------------------------------------------------------------------------------------------------------------
  * Mon	2024-02-04	File created.                                                                   Version: 00.01
- * Wed  2024-02-14  Version control implemented.                                                    Version: 00.02
  * ***************************************************************************************************************/
 
 #include<stdio.h>
@@ -44,8 +43,8 @@
 // main - In the vast, uncharted realms of cyberspace, there exists a function. Not just any function, but the main
 // function. It is the gatekeeper, the sentinel that stands at the threshold of every C and C++ program. It is the
 // beginning and the end, the alpha and the omega.
-// int argc     - Command argument count
-// char **argv  - Command argument strings
+// @param int argc     - Command argument count
+// @param char **argv  - Command argument strings
 // ------------------------------------------------------------------------------------------------------------------
 int main (int argc, char **argv) {
     
