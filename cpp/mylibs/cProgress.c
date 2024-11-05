@@ -17,11 +17,16 @@
  * Mon 2024-10-25 File created.                                                                     Version: 00.01
  * Sun 2024-10-27 Small corrections and bug fixes.                                                  Version: 00.02
  * Sun 2024-10-27 Implemented sleep time and the flag if Sleep is needed.                           Version: 00.03
+ * Sun 2024-10-27 Corrected Windows and MacOS differences.                                          Version: 00.04
  * ***************************************************************************************************************/
 #include "cProgress.h"
-
 #include <stdio.h>
-#include <windows.h>
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * Windows: #include <windows.h>
+ * MacOS:   #include <unistd.h>
+ * --------------------------------------------------------------------------------------------------------------- */
+#include <unistd.h>
 
 const int DIVIDER = 60;     // The DIVIDER defines how many markers are seen in the progress bar.
 
@@ -84,6 +89,11 @@ void update_progress(Progress p, int counter) {
         printf("%c\n", p.startend);
     }
 
-    if(p.time > 0)
-        Sleep(p.time);
+    if(p.time > 0) {
+        /* ----------------------------------------------------------------------------------
+         * Windows: Sleep(p.time);
+         * MacOS:   usleep(p.time);
+         * ---------------------------------------------------------------------------------- */
+        usleep(p.time);
+    }
 }
