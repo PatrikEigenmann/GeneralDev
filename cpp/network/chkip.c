@@ -24,6 +24,7 @@
  * Sun 2024-10-27 Instead of recursive functions, I use the top-down approach.                      Version: 00.09
  * Mon 2024-11-04 cManPage.h implemented.                                                           Version: 00.10
  * Wed 2024-11-06 Crossplatform Programming, made it conform for Windows/MacOS.                     Version: 00.11
+ * Wed 2024-11-06 Changed wild card because in Unix, the wild card '*' causes an error.             Version: 00.12
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,7 +67,7 @@ const int IP_MAX = 254;
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 11);
+    Version v = create_version(0, 12);
         
     // The buffer is needed to write
     // the correct formated version number.
@@ -90,14 +91,14 @@ void print_help() {
     append_format(&manpage, "      diagnostics and management.\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "SYNOPSIS\n");
-    append_format(&manpage, "      chkip <IP ADDRESS with * as the wildcard>\n");
+    append_format(&manpage, "      chkip <IP ADDRESS with ? as the wildcard>\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "DESCRIPTION\n");
-    append_format(&manpage, "      <IP ADDRESS with * as the wildcard>\n");
-    append_format(&manpage, "      192.168.1.* means checking a range of 254 addresses.\n");
-    append_format(&manpage, "      192.168.*.* means checking a range of 64,516 addresses.\n");
+    append_format(&manpage, "      <IP ADDRESS with ? as the wildcard>\n");
+    append_format(&manpage, "      192.168.1.? means checking a range of 254 addresses.\n");
+    append_format(&manpage, "      192.168.?.? means checking a range of 64,516 addresses.\n");
     append_format(&manpage, "                  Which means it will take hours to check all these addresses.\n");
-    append_format(&manpage, "      192.*.*.*   Triggers the help, because it would have to test so many\n");
+    append_format(&manpage, "      192.?.?.?   Triggers the help, because it would have to test so many\n");
     append_format(&manpage, "                  ip address, the program would run for days.\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "      /?, -?, -h, -H, -help\n");
@@ -135,7 +136,7 @@ void print_help() {
 int count_wildcards(const char *str) {
     int count = 0;
     while (*str) {
-        if (*str == '*') {
+        if (*str == '?') {
             count++;
         }
         str++;
@@ -193,7 +194,7 @@ int ping_ip(const char *ip) {
 char *replace_wildcard(const char *ip, const char *replacement) {
     static char new_ip[30];
     strcpy(new_ip, ip);
-    char *pos = strchr(new_ip, '*');
+    char *pos = strchr(new_ip, '?');
     if (pos) {
         *pos = '\0';
     }
