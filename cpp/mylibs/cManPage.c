@@ -6,15 +6,23 @@
  * ---------------------------------------------------------------------------------------------------------------
  * Mon 2024-10-28 File created.                                                                     Version: 00.01
  * Mon 2024-11-04 Fixed all bugs around the string concatination.                                   Version: 00.02
+ * Mon 2024-11-05 Cross plattform implementation.                                                   Version: 00.03
  * ***************************************************************************************************************/
 
-#include <io.h>
+#include "cManPage.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
 
-#include "cManPage.h"
+#ifdef _WIN32
+    // Include Windows relevant libraries
+    #include <io.h>
+
+
+#else
+    // Include Unix relevant libraries
+#endif
 
 const char *FILE_EXTENTION = ".man";
 
