@@ -28,9 +28,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "..\mylibs\cVersion.h"
-#include "..\mylibs\cProgress.h"
-#include "..\mylibs\cManPage.h"
+#ifdef _WIN32
+    #include "..\mylibs\cVersion.h"
+    #include "..\mylibs\cProgress.h"
+    #include "..\mylibs\cManPage.h"
+#else
+    #include "../mylibs/cVersion.h"
+    #include "../mylibs/cProgress.h"
+    #include "../mylibs/cManPage.h"
+#endif
 
 const int IP_MAX = 254;
 
@@ -151,7 +157,7 @@ int count_wildcards(const char *str) {
 int ping_ip(const char *ip) {
     char command[100];
     snprintf(command, sizeof(command), "ping -n 1 -w 5 %s", ip);
-    FILE *fp = _popen(command, "r");
+    FILE *fp = popen(command, "r");
     if (fp == NULL) {
         perror("popen failed");
         return 0;
@@ -164,7 +170,7 @@ int ping_ip(const char *ip) {
             break;
         }
     }
-    _pclose(fp);
+    pclose(fp);
     return is_online;
 }
 
@@ -241,6 +247,8 @@ void print_online_ips(char **online_ips, int count) {
 // @return      0 on successful completion, 1 on error.
 // ---------------------------------------------------------------------------------------------------------------
 int main(int argc, char *argv[]) {
+
+    printf("%s", argv[1]);
 
     // Check if the help was called by command-line arguments
     if(argc != 2 || strcmp(argv[1], "/?") == 0

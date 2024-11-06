@@ -9,12 +9,47 @@
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
  * ---------------------------------------------------------------------------------------------------------------
- * Sun 2024-02-04 File created.                                                                   Version: 00.01
+ * Sun 2024-02-04 File created.                                                                     Version: 00.01
+ * Tue 2024-11-05 Crossplatform tests.                                                              Version: 00.02
  * ***************************************************************************************************************/
-#include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifdef _WIN32
+    
+    // Include Windows relevant libraries
+    #include <io.h>
+    
+    #define _home() getenv("USERPROFILE")
+
+    // Windows version of testing if the file exist.
+    int doesFileExist(char *filename) {
+        return _access(filename, 0) != -1;
+    }
+    
+    // The command I use under Windows is more. More is the equivalent
+    // of the UNIX less command.
+    char command[255] = "more ";
+
+    char *PATH = "\\AppData\\Local\\";    
+#else
+    // Include Unix relevant libraries
+    #include <unistd.h>
+
+    #define _home() getenv("HOME")
+
+    // MacOS/Unix version of testing if the file exist.
+    int doesFileExist(char *filename) {
+        return access(filename, F_OK) != -1;
+    }
+
+    // The command I use under MacOS/Unix is less. Less is the equivalent
+    // of the Windows more command.
+    char command[255] = "less ";
+
+    char *PATH = "/.local/share/";
+#endif
 
 // ------------------------------------------------------------------------------------------------------------------
 // main - In the vast, uncharted realms of cyberspace, there exists a function. Not just any function, but the main
@@ -25,7 +60,15 @@
 // ------------------------------------------------------------------------------------------------------------------
 int main (int argc, char **argv) {
 
-    if(_access("test.txt", 0) != 0) {
+    char *file = _home();
+
+    strcat(file, PATH);
+    strcat(file, "test.txt");
+
+    printf("Filename: %s\n", file);
+
+    /*
+     if(_access("test.txt", 0) != 0) {
         
         printf("File doesn't exist! Writing it.\n");
         FILE *file = fopen("test.txt", "w");
@@ -50,6 +93,7 @@ int main (int argc, char **argv) {
     }
 
     system("more test.txt");
+    */
 
     return 0;
 }

@@ -16,25 +16,50 @@
 #include <stdarg.h>
 
 #ifdef _WIN32
+    
     // Include Windows relevant libraries
     #include <io.h>
+    
+    #define _home() getenv("USERPROFILE")
 
+    // Windows version of testing if the file exist.
+    int doesFileExist(char *filename) {
+        return _access(filename, 0) != -1;
+    }
+    
+    // The command I use under Windows is more. More is the equivalent
+    // of the UNIX less command.
+    char command[255] = "more ";
 
+    char *PATH = "\\AppData\\Local\\";
 #else
     // Include Unix relevant libraries
+    #include <unistd.h>
+
+    #define _home() getenv("HOME")
+
+    // MacOS/Unix version of testing if the file exist.
+    int doesFileExist(char *filename) {
+        return access(filename, F_OK) != -1;
+    }
+
+    // The command I use under MacOS/Unix is less. Less is the equivalent
+    // of the Windows more command.
+    char command[255] = "less ";
+
+    char *PATH = "/.local/share/";
 #endif
 
 const char *FILE_EXTENTION = ".man";
 
-// MacOS is "temp/";
-// Windows is "temp\\";
-char *PATH = "temp\\";
-
+/*
+ */
 void create_manpage(char *filenameIn, char *manualIn) {
 
     ManPage mp;
 
     mp.filename = NULL;
+    append_format(&mp.filename, _home());
     append_format(&mp.filename, PATH);
     append_format(&mp.filename, filenameIn);
     append_format(&mp.filename, FILE_EXTENTION);
@@ -42,10 +67,7 @@ void create_manpage(char *filenameIn, char *manualIn) {
     mp.manual = NULL;
     append_format(&mp.manual, manualIn);
 
-    //printf("Filename: %s\n", mp.filename);
-    //printf("Manual: %s\n", mp.manual);
-
-    if(_access(mp.filename, 0) != 0) {
+    if(!doesFileExist(mp.filename)) {
         
         FILE *file = fopen(mp.filename, "w");
         
@@ -54,15 +76,13 @@ void create_manpage(char *filenameIn, char *manualIn) {
             return;
         }
 
-        fprintf(file, mp.manual);
+        fprintf(file, "%s", mp.manual);
 
         // Now we can close the file.
         fclose(file);
     }
 
-    char command[255] = "more ";
     strcat(command, mp.filename);
-    //printf("Command: %s\n", command);
     system(command);
 }
 
