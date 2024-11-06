@@ -23,6 +23,7 @@
  * Sun 2024-10-27 Progress bar implemented.                                                         Version: 00.08
  * Sun 2024-10-27 Instead of recursive functions, I use the top-down approach.                      Version: 00.09
  * Mon 2024-11-04 cManPage.h implemented.                                                           Version: 00.10
+ * Wed 2024-11-06 Crossplatform Programming, made it conform for Windows/MacOS.                     Version: 00.11
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,7 +66,7 @@ const int IP_MAX = 254;
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 10);
+    Version v = create_version(0, 11);
         
     // The buffer is needed to write
     // the correct formated version number.
@@ -247,9 +248,7 @@ void print_online_ips(char **online_ips, int count) {
 // @return      0 on successful completion, 1 on error.
 // ---------------------------------------------------------------------------------------------------------------
 int main(int argc, char *argv[]) {
-
-    printf("%s", argv[1]);
-
+    
     // Check if the help was called by command-line arguments
     if(argc != 2 || strcmp(argv[1], "/?") == 0
         || strcmp(argv[1], "-?") == 0 || strcmp(argv[1], "-h") == 0
