@@ -7,6 +7,11 @@
  * Mon 2024-10-28 File created.                                                                     Version: 00.01
  * Mon 2024-11-04 Fixed all bugs around the string concatination.                                   Version: 00.02
  * Mon 2024-11-05 Cross plattform implementation.                                                   Version: 00.03
+ * ***************************************************************************************************************
+ * To Do:
+ * - The program checks if the particular manpage exist, if not it will write it. If it exist, it will just read
+ *   it. That is incorrect, what if the content of the manpage changes? It should be rewritten if content changes
+ *   are made.
  * ***************************************************************************************************************/
 
 #include "cManPage.h"
