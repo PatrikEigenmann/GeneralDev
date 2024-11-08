@@ -97,4 +97,19 @@ void toLowerCase(char *str);
  * @return int - Returns 1 if the string starts with the specified character, and 0 otherwise.
  * --------------------------------------------------------------------------------------------------------------- */
 int startsWith(const char *str, char ch);
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the detection of help command triggers within this method, we ensure a seamless and efficient
+ * way to handle user requests for help or usage information. This method not only enhances the maintainability
+ * and readability of your codebase but also guarantees that help commands are consistently and accurately
+ * recognized.
+ * 
+ * Adopting the isHelpTriggered method will streamline your application's user interaction processes, fostering
+ * better user experience and accessibility, and ultimately contributing to a more user-friendly product.
+ * 
+ * @param int argcIn - The number of command-line arguments.
+ * @param char *argvIn - The first string of the command-line arguments array.
+ * @return int - Returns 1 if the help command is triggered, and 0 otherwise.
+ * --------------------------------------------------------------------------------------------------------------- */
+int isHelpTriggered(int argcIn, char *argvIn);
 #endif

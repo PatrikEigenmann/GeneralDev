@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include <ctype.h>
 
 #ifdef _WIN32
     
@@ -213,4 +214,34 @@ void append_format(char **dest, const char *format, ...) {
     }
     
     free(temp);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the detection of help command triggers within this method, we ensure a seamless and efficient
+ * way to handle user requests for help or usage information. This method not only enhances the maintainability
+ * and readability of your codebase but also guarantees that help commands are consistently and accurately
+ * recognized.
+ * 
+ * Adopting the isHelpTriggered method will streamline your application's user interaction processes, fostering
+ * better user experience and accessibility, and ultimately contributing to a more user-friendly product.
+ * 
+ * @param int argcIn - The number of command-line arguments.
+ * @param char *argvIn - The first string of the command-line arguments array.
+ * @return int - Returns 1 if the help command is triggered, and 0 otherwise.
+ * --------------------------------------------------------------------------------------------------------------- */
+int isHelpTriggered(int argcIn, char *argvIn) {
+    
+    /* ------------------------------------------------------- 
+     * Help / Manpage is trigger if program call are like:
+     *  - <program> or
+     *  - <program> -h or
+     *  - <program> -H or
+     *  - <program> -help or
+     *  - <program> -Help
+     * ------------------------------------------------------- */
+    return (argcIn == 1 ||
+        strcmp(argvIn, "-h") == 0 ||
+        strcmp(argvIn, "-H") == 0 ||
+        strcmp(argvIn, "-help") == 0 ||
+        strcmp(argvIn, "-Help") == 0);
 }

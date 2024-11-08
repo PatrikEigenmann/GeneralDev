@@ -25,6 +25,7 @@
  * Mon 2024-11-04 cManPage.h implemented.                                                           Version: 00.10
  * Wed 2024-11-06 Crossplatform Programming, made it conform for Windows/MacOS.                     Version: 00.11
  * Wed 2024-11-06 Changed wild card because in Unix, the wild card '*' causes an error.             Version: 00.12
+ * Thu 2024-11-07 Changed things around, because under Unix things don't work quite right.          Version: 00.13
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -53,7 +54,7 @@ const int IP_MAX = 254;
  * DESCRIPTION: Detailed information about what the program does and how to use it. It explains the
  *              -e and -d options for encoding and decoding a text file, respectively.
  *
- *              /?, -?, -h, -H, -help: These options display the help message.
+ *              -h, -H, -help -Help or no parameter at all: These options display the help message.
  *
  * AUTHOR: Information about the author of the program.
  *
@@ -61,13 +62,13 @@ const int IP_MAX = 254;
  *
  * This function does not take any arguments and does not return any values. It simply prints the
  * help message to the standard output. It’s typically called when the user passes a help flag
- * (-h, -H, -help, -?, or /?) or when the program is used incorrectly. It helps users understand
+ * (-h, -H, -help, or -Help) or when the program is used incorrectly. It helps users understand
  * how to use the program correctly.
  * ------------------------------------------------------------------------------------------------*/
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 12);
+    Version v = create_version(0, 13);
         
     // The buffer is needed to write
     // the correct formated version number.
@@ -95,14 +96,14 @@ void print_help() {
     append_format(&manpage, "\n");
     append_format(&manpage, "DESCRIPTION\n");
     append_format(&manpage, "      <IP ADDRESS with ? as the wildcard>\n");
-    append_format(&manpage, "      192.168.1.? means checking a range of 254 addresses.\n");
-    append_format(&manpage, "      192.168.?.? means checking a range of 64,516 addresses.\n");
-    append_format(&manpage, "                  Which means it will take hours to check all these addresses.\n");
-    append_format(&manpage, "      192.?.?.?   Triggers the help, because it would have to test so many\n");
-    append_format(&manpage, "                  ip address, the program would run for days.\n");
+    append_format(&manpage, "      \"192.168.1.?\" means checking a range of 254 addresses.\n");
+    append_format(&manpage, "      \"192.168.?.?\" means checking a range of 64,516 addresses.\n");
+    append_format(&manpage, "                    Which means it will take hours to check all these addresses.\n");
+    append_format(&manpage, "      \"192.?.?.?\"   Triggers the help, because it would have to test so many\n");
+    append_format(&manpage, "                    ip address, the program would run for days.\n");
     append_format(&manpage, "\n");
-    append_format(&manpage, "      /?, -?, -h, -H, -help\n");
-    append_format(&manpage, "                  Display this help message.\n");
+    append_format(&manpage, "      -h, -H, -help\n");
+    append_format(&manpage, "                    Display this help message.\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "AUTHOR\n");
     append_format(&manpage, "      Patrik Eigenmann (p.eigenmann@gmx.net).\n");
@@ -256,10 +257,8 @@ void print_online_ips(char **online_ips, int count) {
 // ---------------------------------------------------------------------------------------------------------------
 int main(int argc, char *argv[]) {
     
-    // Check if the help was called by command-line arguments
-    if(argc != 2 || strcmp(argv[1], "/?") == 0
-        || strcmp(argv[1], "-?") == 0 || strcmp(argv[1], "-h") == 0
-        || strcmp(argv[1], "-H") == 0 || strcmp(argv[1], "-help") == 0) {
+    // Check if the help is triggered.
+    if(isHelpTriggered(argc, argv[1])) {
         print_help();
         return 1;
     }
