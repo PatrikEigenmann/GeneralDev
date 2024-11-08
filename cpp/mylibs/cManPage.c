@@ -1,5 +1,10 @@
 /* ***************************************************************************************************************
- * cManPage.h - 
+ * cManPage.c - The cManPage.c file provides an interface for managing and manipulating manual pages in C. It
+ * includes essential functions and data structures for creating, modifying, and verifying manual pages, ensuring
+ * cross-platform compatibility and ease of use.
+ * 
+ * This library file serves as a foundational component for applications that require efficient documentation
+ * handling.
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
@@ -7,11 +12,12 @@
  * Mon 2024-10-28 File created.                                                                     Version: 00.01
  * Mon 2024-11-04 Fixed all bugs around the string concatination.                                   Version: 00.02
  * Mon 2024-11-05 Cross plattform implementation.                                                   Version: 00.03
+ * Thu 2024-11-07 Take the check if the file exist away for now. Let's write it every time.         Version: 00.04
  * ***************************************************************************************************************
  * To Do:
  * - The program checks if the particular manpage exist, if not it will write it. If it exist, it will just read
  *   it. That is incorrect, what if the content of the manpage changes? It should be rewritten if content changes
- *   are made.
+ *   are made.                                                                                      -> Temporary
  * ***************************************************************************************************************/
 
 #include "cManPage.h"
@@ -27,7 +33,18 @@
     
     #define _home() getenv("USERPROFILE")
 
-    // Windows version of testing if the file exist.
+    /* --------------------------------------------------------------------------------------------------------
+     * Windows version:
+     * By encapsulating the file existence check within this method, we ensure a seamless and efficient way to
+     * verify the presence of files. This method not only enhances the maintainability and readability of your
+     * codebase, but also guarantees that file existence checks are performed consistently and reliably.
+     * 
+     * Adopting the doesFileExist method will streamline your file handling processes, fostering better
+     * organization and error handling, and ultimately contributing to a more robust and user-friendly product.
+     * 
+     * @param char *filename - The name of the file to check for existence.
+     * @return int - Returns 1 if the file exists, and 0 if it does not.
+     * -------------------------------------------------------------------------------------------------------- */
     int doesFileExist(char *filename) {
         return _access(filename, 0) != -1;
     }
@@ -43,7 +60,18 @@
 
     #define _home() getenv("HOME")
 
-    // MacOS/Unix version of testing if the file exist.
+    /* --------------------------------------------------------------------------------------------------------
+     * MacOS version:
+     * By encapsulating the file existence check within this method, we ensure a seamless and efficient way to
+     * verify the presence of files. This method not only enhances the maintainability and readability of your
+     * codebase, but also guarantees that file existence checks are performed consistently and reliably.
+     * 
+     * Adopting the doesFileExist method will streamline your file handling processes, fostering better
+     * organization and error handling, and ultimately contributing to a more robust and user-friendly product.
+     * 
+     * @param char *filename - The name of the file to check for existence.
+     * @return int - Returns 1 if the file exists, and 0 if it does not.
+     * -------------------------------------------------------------------------------------------------------- */
     int doesFileExist(char *filename) {
         return access(filename, F_OK) != -1;
     }
@@ -57,8 +85,51 @@
 
 const char *FILE_EXTENTION = ".man";
 
-/*
- */
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the process of converting strings to lowercase within this method, we ensure a seamless and
+ * efficient way to standardize text. This method not only enhances the maintainability and readability of your
+ * codebase, but also guarantees that string transformations are performed consistently and reliably.
+ * 
+ * Adopting the toLowerCase method will streamline your text processing tasks, fostering better organization and
+ * uniformity, and ultimately contributing to a more polished and user-friendly product.
+ * 
+ * @param char *str - The string to be converted to lowercase.
+ * --------------------------------------------------------------------------------------------------------------- */
+void toLowerCase(char *str) {
+    while (*str) {
+        *str = tolower(*str);
+        str++;
+    }
+}
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the process of checking if a string starts with a specific character within this method, we
+ * ensure a seamless and efficient way to perform string validations. This method not only enhances the
+ * maintainability and readability of your codebase, but also guarantees that string checks are performed
+ * consistently and reliably.
+ * 
+ * Adopting the startsWith method will streamline your string handling tasks, fostering better organization and
+ * accuracy, and ultimately contributing to a more robust and user-friendly product.
+ * 
+ * @param const char *str - The string to check.
+ * @param char ch - The character to check for at the start of the string.
+ * @return int - Returns 1 if the string starts with the specified character, and 0 otherwise.
+ * --------------------------------------------------------------------------------------------------------------- */
+int startsWith(const char *str, char ch) {
+    return (str[0] == ch);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the creation of manual pages within this method, we ensure a seamless and efficient process
+ * for generating documentation. This not only enhances the maintainability and readability of your codebase, but
+ * also guarantees that manual pages are consistently formatted and easily accessible.
+ * 
+ * Adopting the create_manpage method will streamline your documentation process, fostering better organization
+ * and accessibility, and ultimately contributing to a more polished and user-friendly product.
+ * 
+ * @param char *filenameIn - The filename to the ManPage text file.
+ * @param char *manualIn - The content of the ManPage text.
+ * --------------------------------------------------------------------------------------------------------------- */
 void create_manpage(char *filenameIn, char *manualIn) {
 
     ManPage mp;
@@ -72,25 +143,38 @@ void create_manpage(char *filenameIn, char *manualIn) {
     mp.manual = NULL;
     append_format(&mp.manual, manualIn);
 
-    if(!doesFileExist(mp.filename)) {
+    // if(!doesFileExist(mp.filename)) {
         
-        FILE *file = fopen(mp.filename, "w");
-        
-        if (file == NULL) {
-            printf("Error opening file!\n");
-            return;
-        }
-
-        fprintf(file, "%s", mp.manual);
-
-        // Now we can close the file.
-        fclose(file);
+    FILE *file = fopen(mp.filename, "w");
+    
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
     }
+
+    fprintf(file, "%s", mp.manual);
+
+    // Now we can close the file.
+    fclose(file);
+
+    // }
 
     strcat(command, mp.filename);
     system(command);
 }
 
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the process of appending formatted content within this method, we ensure a seamless and
+ * efficient way to dynamically build strings. This method not only enhances the maintainability and readability
+ * of your codebase, but also guarantees that formatted content is appended consistently and effectively.
+ * 
+ * Adopting the append_format method will streamline your string manipulation tasks, fostering better organization
+ * and flexibility, and ultimately contributing to a more polished and efficient product.
+ * 
+ * @param char **dest - The destination string to which formatted content will be appended.
+ * @param const char *format - The format string.
+ * @param ... - Additional arguments to format and append to the destination string.
+ * --------------------------------------------------------------------------------------------------------------- */
 void append_format(char **dest, const char *format, ...) {
     va_list args;
     va_start(args, format);

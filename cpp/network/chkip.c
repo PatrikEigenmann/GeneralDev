@@ -158,7 +158,13 @@ int count_wildcards(const char *str) {
 // ---------------------------------------------------------------------------------------------------------------
 int ping_ip(const char *ip) {
     char command[100];
-    snprintf(command, sizeof(command), "ping -n 1 -w 5 %s", ip);
+    
+    #ifdef _WIN32
+        snprintf(command, sizeof(command), "ping -n 1 -w 5 %s", ip);
+    #else
+        snprintf(command, sizeof(command), "ping -c 1 -t 1 %s", ip);
+    #endif
+
     FILE *fp = popen(command, "r");
     if (fp == NULL) {
         perror("popen failed");
