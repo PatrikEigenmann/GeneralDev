@@ -7,7 +7,7 @@
  *
  * Compile instructions:
  * For Windows  -> gcc chkip.c ..\mylibs\cVersion.o ..\mylibs\cProgress.o ..\mylibs\cManPage.o -o chkip.exe
- * For MacOS    -> clang chkip.c ../mylibs/cVersion.o ../mylibs/cProgress.o ../mylibs/cProgress.o -o chkip.bin
+ * For MacOS    -> clang chkip.c ../mylibs/cVersion.o ../mylibs/cProgress.o ../mylibs/cManPage.o -o chkip.bin
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
@@ -26,6 +26,7 @@
  * Wed 2024-11-06 Crossplatform Programming, made it conform for Windows/MacOS.                     Version: 00.11
  * Wed 2024-11-06 Changed wild card because in Unix, the wild card '*' causes an error.             Version: 00.12
  * Thu 2024-11-07 Changed things around, because under Unix things don't work quite right.          Version: 00.13
+ * Fri 2024-11-07 Small changes because unter Unix the things are different.                        Version: 00.14
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -68,7 +69,7 @@ const int IP_MAX = 254;
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 13);
+    Version v = create_version(0, 14);
         
     // The buffer is needed to write
     // the correct formated version number.

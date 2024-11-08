@@ -19,6 +19,7 @@
  * Sun 2024-10-27 Implemented sleep time and the flag if Sleep is needed.                           Version: 00.03
  * Tue 2024-11-05 Corrected Windows and MacOS differences.                                          Version: 00.04
  * Tue 2024-11-05 Created the crossplatform version of this library.                                Version: 00.05
+ * Fri 2024-11-08 fflush the buffer stdout before printing a new character.                         Version: 00.06
  * ***************************************************************************************************************/
 #include "cProgress.h"
 #include <stdio.h>
@@ -106,6 +107,9 @@ void update_progress(Progress p, int counter) {
     else if (counter >= p.full){
         printf("%c\n", p.startend);
     }
+
+    // fflush the stdout buffer.
+    fflush(stdout);
 
     if(p.time > 0) {
         goToSleep(p.time);
