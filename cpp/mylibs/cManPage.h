@@ -72,33 +72,6 @@ void append_format(char **dest, const char *format, ...);
 int doesFileExist(char *filename);
 
 /* ---------------------------------------------------------------------------------------------------------------
- * By encapsulating the process of converting strings to lowercase within this method, we ensure a seamless and
- * efficient way to standardize text. This method not only enhances the maintainability and readability of your
- * codebase, but also guarantees that string transformations are performed consistently and reliably.
- * 
- * Adopting the toLowerCase method will streamline your text processing tasks, fostering better organization and
- * uniformity, and ultimately contributing to a more polished and user-friendly product.
- * 
- * @param char *str - The string to be converted to lowercase.
- * --------------------------------------------------------------------------------------------------------------- */
-void toLowerCase(char *str);
-
-/* ---------------------------------------------------------------------------------------------------------------
- * By encapsulating the process of checking if a string starts with a specific character within this method, we
- * ensure a seamless and efficient way to perform string validations. This method not only enhances the
- * maintainability and readability of your codebase, but also guarantees that string checks are performed
- * consistently and reliably.
- * 
- * Adopting the startsWith method will streamline your string handling tasks, fostering better organization and
- * accuracy, and ultimately contributing to a more robust and user-friendly product.
- * 
- * @param const char *str - The string to check.
- * @param char ch - The character to check for at the start of the string.
- * @return int - Returns 1 if the string starts with the specified character, and 0 otherwise.
- * --------------------------------------------------------------------------------------------------------------- */
-int startsWith(const char *str, char ch);
-
-/* ---------------------------------------------------------------------------------------------------------------
  * By encapsulating the detection of help command triggers within this method, we ensure a seamless and efficient
  * way to handle user requests for help or usage information. This method not only enhances the maintainability
  * and readability of your codebase but also guarantees that help commands are consistently and accurately

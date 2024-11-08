@@ -87,40 +87,6 @@
 const char *FILE_EXTENTION = ".man";
 
 /* ---------------------------------------------------------------------------------------------------------------
- * By encapsulating the process of converting strings to lowercase within this method, we ensure a seamless and
- * efficient way to standardize text. This method not only enhances the maintainability and readability of your
- * codebase, but also guarantees that string transformations are performed consistently and reliably.
- * 
- * Adopting the toLowerCase method will streamline your text processing tasks, fostering better organization and
- * uniformity, and ultimately contributing to a more polished and user-friendly product.
- * 
- * @param char *str - The string to be converted to lowercase.
- * --------------------------------------------------------------------------------------------------------------- */
-void toLowerCase(char *str) {
-    while (*str) {
-        *str = tolower(*str);
-        str++;
-    }
-}
-
-/* ---------------------------------------------------------------------------------------------------------------
- * By encapsulating the process of checking if a string starts with a specific character within this method, we
- * ensure a seamless and efficient way to perform string validations. This method not only enhances the
- * maintainability and readability of your codebase, but also guarantees that string checks are performed
- * consistently and reliably.
- * 
- * Adopting the startsWith method will streamline your string handling tasks, fostering better organization and
- * accuracy, and ultimately contributing to a more robust and user-friendly product.
- * 
- * @param const char *str - The string to check.
- * @param char ch - The character to check for at the start of the string.
- * @return int - Returns 1 if the string starts with the specified character, and 0 otherwise.
- * --------------------------------------------------------------------------------------------------------------- */
-int startsWith(const char *str, char ch) {
-    return (str[0] == ch);
-}
-
-/* ---------------------------------------------------------------------------------------------------------------
  * By encapsulating the creation of manual pages within this method, we ensure a seamless and efficient process
  * for generating documentation. This not only enhances the maintainability and readability of your codebase, but
  * also guarantees that manual pages are consistently formatted and easily accessible.
