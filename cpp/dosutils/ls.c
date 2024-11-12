@@ -14,7 +14,7 @@
  * with our refined ls utility.
  *
  * compile instruction:
- * Windows: gcc ls.c ..\mylibs\cVersion.o ..\mylibs\cManPage.o -o ls.exe
+ * Windows: gcc ls.c ..\mylibs\cVersion.o ..\mylibs\cManPage.o -o ls
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
@@ -22,6 +22,9 @@
  * Thu 2024-10-24 File created and basic functionality programmed.                                  Version: 00.01
  * Thu 2024-10-24 Manpage style help implemented.                                                   Version: 00.02
  * Mon 2024-11-04 cManPage implemented. New Updates and Bug Fixes.                                  Version: 00.03
+ * Mon 2024-11-05 cManPage.h implemented. New Update and Bug Fixes.                                 Version: 00.04
+ * Mon 2024-11-11 Changed how the help is triggered.                                                Version: 00.05
+ * Mon 2024-11-11 Method name change - instead show_help -> print_help.                             Version: 00.06
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,7 +33,7 @@
 #include "..\mylibs\cManPage.h"
 
 /* ---------------------------------------------------------------------------------------------------------------
- * The show_help function is our top-notch guidance feature, crafted to provide users with clear, intuitive
+ * The print_help function is our top-notch guidance feature, crafted to provide users with clear, intuitive
  * instructions for leveraging our command-line utility within the Windows Command Prompt environment. Think of it
  * as your personal guide, always ready to offer step-by-step explanations for each option available in the tool.
  *
@@ -44,10 +47,10 @@
  * of our user-centric approach, providing instant, reliable support whenever needed. Welcome to a new era of
  * intuitive, efficient command-line interaction.
  * --------------------------------------------------------------------------------------------------------------- */
-void show_help() {
+void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 3);
+    Version v = create_version(0, 6);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -81,7 +84,7 @@ void show_help() {
     append_format(&manpage, "      functional directory listing tool. Ready to elevate your command-line\n");
     append_format(&manpage, "      experience? Dive into productivity with our refined ls utility.\n");
     append_format(&manpage, "SYNOPSIS\n");
-    append_format(&manpage, "      ls [-l\\-a\\-la\\-al\\-?]\n");
+    append_format(&manpage, "      ls [-l\\-a\\-la\\-al\\-h\\-H\\-help\\-Help]\n");
     append_format(&manpage, "DESCRIPTION\n");
     append_format(&manpage, "      -l\n");
     append_format(&manpage, "          Using long listing format to display the listing.\n");
@@ -92,7 +95,7 @@ void show_help() {
     append_format(&manpage, "      -al\\-la\n");
     append_format(&manpage, "          Displaying hidden files and use long listing format.\n");
     append_format(&manpage, "\n");
-    append_format(&manpage, "      /?\\-?\\/H\\-H\\/h\\-h\\/help\\-help\n");
+    append_format(&manpage, "      -H\\-h\\-Help\\-help\n");
     append_format(&manpage, "          Displaying this help and exit.\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "AUTHOR\n");
@@ -134,6 +137,18 @@ void show_help() {
  * @param argv An array of null-terminated strings representing the command-line arguments.
  * --------------------------------------------------------------------------------------------------------------- */
 int main(int argc, char *argv[]) {
+
+    // Check if the help is triggered. For the ls command, the
+    // help needs to be only triggered, when there is the command
+    // line argument -h or -H or -help -Help. ls alone should
+    // just list the files. Thank you.
+    if(argc != 1) {
+        if(isHelpTriggered(argc, argv[1])) {
+            print_help();
+            return 1;
+        }
+    }
+
     char command[100] = "dir";
 
     for (int i = 1; i < argc; i++) {
@@ -146,7 +161,7 @@ int main(int argc, char *argv[]) {
                         strcat(command, " /A");
                         break;
                     default:
-                        show_help();
+                        print_help();
                         return 1;
                 }
           }

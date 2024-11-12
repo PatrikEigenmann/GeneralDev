@@ -28,8 +28,8 @@
  * forever changed by its brief existence.
  *
  * Compile instructions:
- * For Windows  -> gcc cHelloWorld.c -o cHelloWorld.exe
- * For MacOS    -> clang cHelloWorld.c -o cHelloWorld.bin
+ * For Windows  -> gcc cHelloWorld.c -o cHelloWorld
+ * For MacOS    -> clang cHelloWorld.c -o cHelloWorld
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net

@@ -6,8 +6,8 @@
  * diagnostics and management.
  *
  * Compile instructions:
- * For Windows  -> gcc chkip.c ..\mylibs\cVersion.o ..\mylibs\cProgress.o ..\mylibs\cManPage.o -o chkip.exe
- * For MacOS    -> clang chkip.c ../mylibs/cVersion.o ../mylibs/cProgress.o ../mylibs/cManPage.o -o chkip.bin
+ * For Windows  -> gcc chkip.c ..\mylibs\cVersion.o ..\mylibs\cProgress.o ..\mylibs\cManPage.o -o chkip
+ * For MacOS    -> clang chkip.c ../mylibs/cVersion.o ../mylibs/cProgress.o ../mylibs/cManPage.o -o chkip
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net

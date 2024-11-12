@@ -17,7 +17,7 @@
  * command-line excellence with our refined, robust, and highly functional directory management tool.
  *
  * Compile instructions:
- * For Windows  -> gcc cp.c ..\mylibs\cVersion.c ..\mylibs\cManPage.o -o cp.exe
+ * For Windows  -> gcc cp.c ..\mylibs\cVersion.c ..\mylibs\cManPage.o -o cp
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
@@ -26,6 +26,8 @@
  * Thu 2024-10-24 Manpage style help implemented.                                                   Version: 00.02
  * Thu 2024-10-24 Fixed compiler errors due to including header files and windows specific libs.    Version: 00.03
  * Mon 2024-11-05 cManPage.h implemented. New Update and Bug Fixes.                                 Version: 00.04
+ * Mon 2024-11-11 Changed how the help is triggered.                                                Version: 00.05
+ * Mon 2024-11-11 Method name change - instead show_help -> print_help.                             Version: 00.06
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,7 +41,7 @@
 #include "..\mylibs\cManPage.h"
 
 /* ---------------------------------------------------------------------------------------------------------------
- * The show_help function is our top-notch guidance feature, crafted to provide users with clear, intuitive
+ * The print_help function is our top-notch guidance feature, crafted to provide users with clear, intuitive
  * instructions for leveraging our command-line utility within the Windows Command Prompt environment. Think of it
  * as your personal guide, always ready to offer step-by-step explanations for each option available in the tool.
  *
@@ -53,10 +55,10 @@
  * of our user-centric approach, providing instant, reliable support whenever needed. Welcome to a new era of
  * intuitive, efficient command-line interaction.
  * --------------------------------------------------------------------------------------------------------------- */
-void show_help() {
+void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 4);
+    Version v = create_version(0, 6);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -113,7 +115,7 @@ void show_help() {
     append_format(&manpage, "       -u, --update\n");
     append_format(&manpage, "              Copy only when the SOURCE file is newer than the destination file.\n");
     append_format(&manpage, "\n");
-    append_format(&manpage, "       -?, --help\n");
+    append_format(&manpage, "       -h, -help -H -Help\n");
     append_format(&manpage, "              Display this help and exit.\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "AUTHOR\n");
@@ -294,6 +296,13 @@ void copy_directory(const char *source, const char *destination, int preserve, i
  * @param argv An array of null-terminated strings representing the command-line arguments.
  * --------------------------------------------------------------------------------------------------------------- */
 int main(int argc, char *argv[]) {
+    
+    // Check if the help is triggered.
+    if(isHelpTriggered(argc, argv[1])) {
+        print_help();
+        return 1;
+    }
+    
     int recursive = 0, preserve = 0, interactive = 0, update = 0;
 
     // Parse options
@@ -314,7 +323,7 @@ int main(int argc, char *argv[]) {
                         update = 1;
                         break;
                     default:
-                        show_help();
+                        print_help();
                         return 1;
                 }
             }

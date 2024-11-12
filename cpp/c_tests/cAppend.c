@@ -3,8 +3,8 @@
  * handle strings as parameters and change the memory inside the function.
  *
  * Compile instructions:
- * For Windows  -> gcc cAppend.c -o cAppend.exe
- * For MacOS    -> clang cAppend.c -o cAppend.bin
+ * For Windows  -> gcc cAppend.c -o cAppend
+ * For MacOS    -> clang cAppend.c -o cAppend
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net

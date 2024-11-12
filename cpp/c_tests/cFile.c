@@ -3,8 +3,8 @@
  * open them and prepaire to read them.
  *
  * Compile instructions:
- * For Windows  -> gcc cFile.c -o cFile.exe
- * For MacOS    -> clang cFile.c -o cFile.bin
+ * For Windows  -> gcc cFile.c -o cFile
+ * For MacOS    -> clang cFile.c -o cFile
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
