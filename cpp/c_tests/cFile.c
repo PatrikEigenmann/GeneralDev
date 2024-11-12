@@ -51,13 +51,14 @@
     char *PATH = "/.local/share/";
 #endif
 
-// ------------------------------------------------------------------------------------------------------------------
-// main - In the vast, uncharted realms of cyberspace, there exists a function. Not just any function, but the main
-// function. It is the gatekeeper, the sentinel that stands at the threshold of every C and C++ program. It is the
-// beginning and the end, the alpha and the omega.
-// @param int argc     - Command argument count
-// @param char **argv  - Command argument strings
-// ------------------------------------------------------------------------------------------------------------------
+/* ------------------------------------------------------------------------------------------------------------------
+ * main - In the vast, uncharted realms of cyberspace, there exists a function. Not just any function, but the main
+ * function. It is the gatekeeper, the sentinel that stands at the threshold of every C and C++ program. It is the
+ * beginning and the end, the alpha and the omega.
+ * 
+ * @param int argc     - Command argument count
+ * @param char **argv  - Command argument strings
+ * ------------------------------------------------------------------------------------------------------------------ */
 int main (int argc, char **argv) {
 
     char *file = _home();

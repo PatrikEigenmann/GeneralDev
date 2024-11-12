@@ -1,9 +1,9 @@
 /* ***************************************************************************************************************
- * cArg.c - A small test to figure out how to handle printf within a for loop.
+ * cForward.c - A small test to figure out how to handle printf within a for loop.
  *
  * Compile instructions:
- * For Windows  -> gcc cArg.c -o cArg
- * For MacOS    -> clang cArg.c -o cArg
+ * For Windows  -> gcc cForward.c -o cForward
+ * For MacOS    -> clang cForward.c -o cForward
  * ---------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
@@ -14,6 +14,17 @@
 #include <stdio.h>
 #include <unistd.h>
 
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the process of visualizing progress within this method, we ensure a seamless and efficient way
+ * to display progress updates. This method not only enhances the maintainability and readability of your codebase,
+ * but also guarantees that progress is displayed consistently and interactively.
+ * 
+ * Adopting the foo method will streamline your progress tracking tasks, fostering better real-time feedback and
+ * user interaction, and ultimately contributing to a more polished and user-friendly product.
+ * 
+ * @param int i - The current iteration count.
+ * @param int max - The maximum iteration count. 
+ * --------------------------------------------------------------------------------------------------------------- */
 void foo(int i, int max) {
     if(i == 0) {
         printf("Start |");
@@ -27,9 +38,18 @@ void foo(int i, int max) {
     usleep(100000);
 }
 
+/* ------------------------------------------------------------------------------------------------------------------
+ * main - In the vast, uncharted realms of cyberspace, there exists a function. Not just any function, but the main
+ * function. It is the gatekeeper, the sentinel that stands at the threshold of every C and C++ program. It is the
+ * beginning and the end, the alpha and the omega.
+ * 
+ * @param int argc     - Command argument count
+ * @param char **argv  - Command argument strings
+ * ------------------------------------------------------------------------------------------------------------------ */
 int main(int argc, char *argv[]) {
     
-    for(int j=0; j <= 800; j++) foo(j, 800);
+    for(int j=0; j <= 800; j++)
+        foo(j, 800);
     
     return 0;
 }

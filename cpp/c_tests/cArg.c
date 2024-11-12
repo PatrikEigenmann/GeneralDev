@@ -17,24 +17,16 @@
 #include <string.h>
 #include <ctype.h>
 
-/* ***************************************************************************************************************
- * cFile.c - A small test to figure out how to handle files. A simple showcase to check files,
- * open them and prepaire to read them.
- *
- * Compile instructions:
- * For Windows  -> gcc cFile.c -o cFile.exe
- * For MacOS    -> clang cFile.c -o cFile.bin
- * ---------------------------------------------------------------------------------------------------------------
- * Author:       Patrik Eigenmann
- * eMail:        p.eigenmann@gmx.net
- * ---------------------------------------------------------------------------------------------------------------
- * Sun 2024-02-04 File created.                                                                     Version: 00.01
- * Tue 2024-11-05 Crossplatform tests.                                                              Version: 00.02
- * ***************************************************************************************************************/
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the process of converting strings to lowercase within this method, we ensure a seamless and
+ * efficient way to standardize text. This method not only enhances the maintainability and readability of your
+ * codebase, but also guarantees that string transformations are performed consistently and reliably.
+ * 
+ * Adopting the toLowerCase method will streamline your text processing tasks, fostering better organization and
+ * uniformity, and ultimately contributing to a more polished and user-friendly product.
+ * 
+ * @param char *str - The string to be converted to lowercase.
+ * --------------------------------------------------------------------------------------------------------------- */
 void toLowerCase(char *str) {
     while (*str) {
         *str = tolower(*str);
@@ -42,13 +34,14 @@ void toLowerCase(char *str) {
     }
 }
 
-// ------------------------------------------------------------------------------------------------------------------
-// main - In the vast, uncharted realms of cyberspace, there exists a function. Not just any function, but the main
-// function. It is the gatekeeper, the sentinel that stands at the threshold of every C and C++ program. It is the
-// beginning and the end, the alpha and the omega.
-// @param int argc     - Command argument count
-// @param char **argv  - Command argument strings
-// ------------------------------------------------------------------------------------------------------------------
+/* ------------------------------------------------------------------------------------------------------------------
+ * main - In the vast, uncharted realms of cyberspace, there exists a function. Not just any function, but the main
+ * function. It is the gatekeeper, the sentinel that stands at the threshold of every C and C++ program. It is the
+ * beginning and the end, the alpha and the omega.
+ * 
+ * @param int argc     - Command argument count
+ * @param char **argv  - Command argument strings
+ * ------------------------------------------------------------------------------------------------------------------ */
 int main (int argc, char **argv) {
 
     printf("Command Line Argument Count: %d\n", argc);
