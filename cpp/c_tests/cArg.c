@@ -1,7 +1,12 @@
 /* ***************************************************************************************************************
- * cArg.c - A small test to figure out how to handle command line arguments. A simple showcase on what can I do and
- * and what not.
- *
+ * The cArg.c program is a straightforward yet powerful demonstration of handling command-line arguments in C.
+ * Designed to test and showcase effective string manipulation, this program highlights key techniques for
+ * processing user inputs directly from the command line, essential for building interactive and user-friendly
+ * applications.
+ * 
+ * This program serves as an excellent educational tool and a foundation for developing more complex command-line
+ * applications, ultimately contributing to a more polished and efficient software development process.
+ * 
  * Compile instructions:
  * For Windows  -> gcc cArg.c -o cArg
  * For MacOS    -> clang cArg.c -o cArg

@@ -1,5 +1,15 @@
 /* ***************************************************************************************************************
- * cForward.c - A small test to figure out how to handle printf within a for loop.
+ * The cForward.c program is a concise yet impactful demonstration of handling real-time progress updates within a
+ * loop using the printf function. This program effectively illustrates the dynamic display of progress, ensuring
+ * consistent and interactive feedback throughout the iteration process.
+ * 
+ * This program is cross-platform, providing compile instructions for both Windows and macOS, making it versatile
+ * and accessible. By showcasing real-time progress visualization, the cForward.c program serves as an excellent
+ * educational tool and a practical solution for developers needing efficient and interactive progress tracking.
+ * 
+ * Whether you're handling simple loops or building complex iterative processes, this program exemplifies effective
+ * progress management techniques, contributing to a more user-friendly and interactive software development
+ * experience.
  *
  * Compile instructions:
  * For Windows  -> gcc cForward.c -o cForward

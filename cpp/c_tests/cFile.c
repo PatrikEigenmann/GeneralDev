@@ -1,6 +1,15 @@
 /* ***************************************************************************************************************
- * cFile.c - A small test to figure out how to handle files. A simple showcase to check files,
- * open them and prepaire to read them.
+ * The cFile.c program is an essential demonstration of handling file operations in C. This program efficiently
+ * showcases how to check for file existence, open files, and prepare them for reading, providing a robust
+ * foundation for more advanced file handling tasks.
+ * 
+ * This cross-platform program ensures compatibility with both Windows and macOS, allowing for versatile usage
+ * across different operating systems. By addressing real-world file management scenarios, the cFile.c program
+ * serves as a vital educational tool and a practical solution for developers.
+ * 
+ * Whether you are working on simple file operations or building complex file management systems, this program
+ * exemplifies efficient and effective file handling techniques, ultimately contributing to a more organized and
+ * reliable software development process.
  *
  * Compile instructions:
  * For Windows  -> gcc cFile.c -o cFile
@@ -68,7 +77,6 @@ int main (int argc, char **argv) {
 
     printf("Filename: %s\n", file);
 
-    /*
      if(_access("test.txt", 0) != 0) {
         
         printf("File doesn't exist! Writing it.\n");
@@ -94,7 +102,6 @@ int main (int argc, char **argv) {
     }
 
     system("more test.txt");
-    */
-
+    
     return 0;
 }

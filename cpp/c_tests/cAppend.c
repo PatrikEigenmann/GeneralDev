@@ -1,6 +1,22 @@
 /* ***************************************************************************************************************
- * cAppend.c - A small test to figure out how to handle strings in functions. A simple showcase differen ways to
- * handle strings as parameters and change the memory inside the function.
+ * The cAppend.c program exemplifies the dynamic handling and manipulation of strings within functions, showcasing
+ * flexible string operations and memory management. Designed as a foundational test, this program highlights
+ * efficient string appending techniques, crucial for building robust and adaptable software solutions.
+ * 
+ * Key Components:
+ * 
+ * - Functionality: Demonstrates the ability to augment a base string with user-provided input, culminating in the
+ *   display of the modified string. This showcases seamless integration and manipulation of strings within a
+ *   structured framework.
+ * 
+ * - Versatility: Provides cross-platform compile instructions, ensuring compatibility and ease of use across both
+ *   Windows and macOS systems.
+ * 
+ * - Clarity: The concise and well-documented codebase enhances maintainability and readability, making it an
+ *   excellent example for learning and demonstrating string handling in C.
+ * 
+ * This program serves as an educational tool, and hopefully it lays the groundwork for more complex string
+ * operations, ultimately contributing to the development of efficient and reliable software applications.
  *
  * Compile instructions:
  * For Windows  -> gcc cAppend.c -o cAppend
