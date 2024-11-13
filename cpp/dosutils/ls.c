@@ -75,7 +75,7 @@ void print_help() {
     append_format(&manpage, "      The intuitive flag system enables seamless command combinations such as\n");
     append_format(&manpage, "      -al, ensuring users get exactly the information they need with minimal\n");
     append_format(&manpage, "      effort. Additionally, our user-friendly help feature, accessible via -?,\n");
-    append_format(&manpage, "      guides you through the command’s capabilities, mirroring the familiarity\n");
+    append_format(&manpage, "      guides you through the commands capabilities, mirroring the familiarity\n");
     append_format(&manpage, "      and ease of Unix man pages.\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "      Engineered to be both powerful and accessible, this utility empowers users\n");
