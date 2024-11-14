@@ -1,4 +1,4 @@
-#!/usr/bin/php
+#!/bin/php
 <?php
 /* ***************************************************************************************************
  * <php script> - This class Calculator takes two numbers as input when an object is created. It has
