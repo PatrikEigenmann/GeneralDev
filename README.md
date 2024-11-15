@@ -19,10 +19,10 @@ To get started, clone the repository to your local machine:
 ```sh
 git clone https://github.com/PatrikEigenmann/GeneralDev.git
 
-License
+## License
 This project is licensed under the GNU General Public License - see the LICENSE file for details.
 
-Contact
+## Contact
 For any questions or feedback, feel free to reach out:
 
 Patrik Eigenmann (p.eigenmann@gmx.net)
