@@ -12,17 +12,17 @@
 :: email:      p.eigenmann@gmx.net
 :: --------------------------------------------------------------------------------------------------------
 :: Change Log:
-:: Sat 2023-12-30 File created                                                                  Version 01.00
-:: Sat 2023-12-30 Python file added                                                             Version 01.01
-:: Sat 2023-12-30 PHP file added                                                                Version 01.02
-:: Sat 2023-12-30 Perl file added                                                               Version 01.03
-:: Sat 2023-12-30 Java file added                                                               Version 01.04
-:: Sat 2023-12-30 C# file added                                                                 Version 01.05
-:: Sat 2023-12-30 C file added                                                                  Version 01.06
-:: Sat 2023-12-30 C++ file added                                                                Version 01.07
-:: Sat 2023-12-30 C/C++ Header file added                                                       Version 01.08
-:: Wed 2024-11-13 Description added.                                                            Version 01.09
-:: Thu 2024-11-14 Added the Java starter program.                                               Version 01.10
+:: Sat 2023-12-30 File created                                                                  Version 00.01
+:: Sat 2023-12-30 Python file added                                                             Version 00.02
+:: Sat 2023-12-30 PHP file added                                                                Version 00.03
+:: Sat 2023-12-30 Perl file added                                                               Version 00.04
+:: Sat 2023-12-30 Java file added                                                               Version 00.05
+:: Sat 2023-12-30 C# file added                                                                 Version 00.06
+:: Sat 2023-12-30 C file added                                                                  Version 00.07
+:: Sat 2023-12-30 C++ file added                                                                Version 00.08
+:: Sat 2023-12-30 C/C++ Header file added                                                       Version 00.09
+:: Wed 2024-11-13 Description added.                                                            Version 00.10
+:: Thu 2024-11-14 Added the Java starter program.                                               Version 00.11
 :: --------------------------------------------------------------------------------------------------------
 
 setlocal
