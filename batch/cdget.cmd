@@ -71,8 +71,12 @@ if "%language%"=="-h" (
 )
 
 :: Java starter C program section
-if "%language%"=="-c" (
+if "%language%"=="-cj" (
     copy "D:\Development\templates\c_java_template.c" "%filename%.c"
 )
 
+:: Batch section
+if "%language%"=="-cmd" (
+    copy "D:\Development\templates\batch_template.cmd" "%filename%.cmd"
+)
 endlocal
