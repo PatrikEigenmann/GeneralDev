@@ -22,6 +22,7 @@
 :: Sat 2023-12-30 C++ file added                                                                Version 01.07
 :: Sat 2023-12-30 C/C++ Header file added                                                       Version 01.08
 :: Wed 2024-11-13 Description added.                                                            Version 01.09
+:: Thu 2024-11-14 Added the Java starter program.                                               Version 01.10
 :: --------------------------------------------------------------------------------------------------------
 
 setlocal
@@ -67,6 +68,11 @@ if "%language%"=="-cpp" (
 :: C Header section
 if "%language%"=="-h" (
     copy "D:\Development\templates\header_template.h" "%path%\%filename%.h"
+)
+
+:: Java starter C program section
+if "%language%"=="-c" (
+    copy "D:\Development\templates\c_java_template.c" "%filename%.c"
 )
 
 endlocal
