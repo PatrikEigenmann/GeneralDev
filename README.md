@@ -18,6 +18,7 @@ To get started, clone the repository to your local machine:
 
 ```sh
 git clone https://github.com/PatrikEigenmann/GeneralDev.git
+```
 
 ## License
 This project is licensed under the GNU General Public License - see the LICENSE file for details.
