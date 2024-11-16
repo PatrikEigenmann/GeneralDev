@@ -46,7 +46,7 @@
 void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 2);
+    Version v = create_version(0, 3);
     
     // The buffer is needed to write
     // the correct formated version number.
