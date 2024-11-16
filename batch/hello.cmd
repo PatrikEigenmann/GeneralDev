@@ -15,4 +15,8 @@
 :: Thu 2024-11-14 File created                                                                  Version 00.01
 :: ----------------------------------------------------------------------------------------------------------
 
-echo "Hello Batch World!"
+:: Setting the string into the variable message.
+set message=Hello Batch World!
+
+:: Display the string in the variable message.
+echo %message%
