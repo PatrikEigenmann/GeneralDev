@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # ************************************************************************************
 # cdget.sh - Script will create a copy of the desired template in the desired folder.
 # cdget.sh <option: -py>	<path> <filename>		{for python files}
@@ -17,16 +16,16 @@
 # ------------------------------------------------------------------------------------
 # Change Log:
 # Tuesday	2023-06-13	File created.                                   Version: 00.01
-# Tuesday	2023-06-13	-py	python files implemented.	        Version: 00.02
-# Tuesday	2023-06-13	-php	php files implemented.		        Version: 00.03
-# Tuesday	2023-06-13	-wphp	web php files implemented.	        Version: 00.04
-# Tuesday	2023-06-13	-c	 files implemented.		        Version: 00.05
-# Tuesday	2023-06-13	-cpp	c++ files implemented.		        Version: 00.06
-# Tuesday	2023-06-13	-h	c\c++ header files implemented.	        Version: 00.06
-# Wednesday	2023-06-14	-b	bash files implemented.		        Version: 00.07
-# Wednesday	2023-06-14	-?	call the help manpages style.	        Version: 00.08
+# Tuesday	2023-06-13	-py	    python files implemented.	            Version: 00.02
+# Tuesday	2023-06-13	-php	php files implemented.		            Version: 00.03
+# Tuesday	2023-06-13	-wphp	web php files implemented.	            Version: 00.04
+# Tuesday	2023-06-13	-c	    files implemented.		                Version: 00.05
+# Tuesday	2023-06-13	-cpp	c++ files implemented.		            Version: 00.06
+# Tuesday	2023-06-13	-h	    c\c++ header files implemented.	        Version: 00.06
+# Wednesday	2023-06-14	-b	    bash files implemented.		            Version: 00.07
+# Wednesday	2023-06-14	-?	    call the help manpages style.	        Version: 00.08
 # Wednesday	2023-06-14	Moved script into a working release.	        Version: 01.00
-# Wednesday	2023-12-22	-c#	c# class file implemented	        Version: 01.01
+# Wednesday	2023-12-22	-c#	    c# class file implemented	            Version: 01.01
 # ************************************************************************************
 
 # ---------------------------------------------------------------------
@@ -94,7 +93,6 @@ display_help () {
 
 x=1
 language=""
-path=""
 filename=""
 
 # -----------------------------
@@ -107,10 +105,6 @@ do
 	fi
 
 	if [ $x -eq 2 ]; then
-		path=$p
-	fi
-
-	if [ $x -eq 3 ]; then
 		filename=$p
 	fi
 
@@ -121,90 +115,63 @@ done
 # Python section
 # -----------------------------
 if [ $language = "-py" ]; then
-	if [ ! -d "~/Development/python/$path" ]; then
-		mkdir ~/Development/python/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/python_template.py $path/$filename.py
+	cp ~/development/templates/python_template.py $filename.py
 fi
 
 # -----------------------------
 # PHP section
 # -----------------------------
 if [ $language = "-php" ]; then
-	if [ ! -d "~/Development/php/$path" ]; then
-		mkdir ~/Development/php/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/php_template.php $path/$filename.php
+	cp ~/development/templates/php_template.php $filename.php
 fi
 
 # -----------------------------
 # Web-PHP section
 # -----------------------------
 if [ $language = "-wphp" ]; then
-	if [ ! -d "~/Development/www-php/$path" ]; then
-		mkdir ~/Development/www-php/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/www-php_template.php $path/$filename.php
+	cp ~/development/templates/www-php_template.php $filename.php
 fi
 
 # -----------------------------
 # c-Program section
 # -----------------------------
 if [ $language = "-c" ]; then
-	if [ ! -d "~/Development/c++/$path" ]; then
-		mkdir ~/Development/c++/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/c_template.c $path/$filename.c
+	cp ~/development/templates/c_template.c $filename.c
 fi
 
 # -----------------------------
 # c#-Program section
 # -----------------------------
 if [ $language = "-c#" ]; then
-	if [ ! -d "~/Development/c#/$path" ]; then
-		mkdir ~/Development/c#/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/c#_template.cs $path/$filename.cs
+	cp ~/development/templates/c#_template.cs $filename.cs
 fi
 
 # -----------------------------
 # c++ Program section
 # -----------------------------
 if [ $language = "-cpp" ]; then
-	if [ ! -d "~/Development/c++/$path" ]; then
-		mkdir ~/Development/c++/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/cpp_template.cpp $path/$filename.cpp
+	cp ~/development/templates/cpp_template.cpp $filename.cpp
 fi
 
 # -----------------------------
 # C\C++ Header section
 # -----------------------------
 if [ $language = "-h" ]; then
-	if [ ! -d "~/Development/c++/$path" ]; then
-		mkdir ~/Development/c++/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/header_template.h $path/$filename.h
+	cp ~/development/templates/header_template.h $filename.h
 fi
 
 # -----------------------------
 # Java Class section
 # -----------------------------
 if [ $language = "-j" ]; then
-	if [ ! -d "~/Development/java/$path" ]; then
-		mkdir ~/Development/java/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/java_template.java $path/$filename.java
+	cp ~/development/templates/java_template.java $filename.java
 fi
 
 # -----------------------------
 # bash files sections
 # -----------------------------
 if [ $language = "-b" ]; then
-	if [ ! -d "~/Development/bash/$path" ]; then
-		mkdir ~/Development/bash/$path 2> /dev/null
-	fi
-	cp ~/Development/templates/bash_template.sh $path/$filename.sh
+	cp ~/development/templates/bash_template.sh $filename.sh
 fi
 
 # -----------------------------
