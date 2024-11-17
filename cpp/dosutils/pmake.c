@@ -12,9 +12,13 @@
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
  * ------------------------------------------------------------------------------------------------------------------
- * Fri 2024-11-15 File created.                                                                        Version: 00.01
- * Sat 2024-11-16 Rearranged the whole program and renamed it. Fixed some bug too.                     Version: 00.02
- * Sat 2024-11-16 Bug Fix in putting the compiler command togheter.                                    Version: 00.03
+ * Fri 2024-11-15 File created.                                                                         Version: 00.01
+ * Sat 2024-11-16 Rearranged the whole program and renamed it. Fixed some bug too.                      Version: 00.02
+ * Sat 2024-11-16 Bug Fix in putting the compiler command togheter.                                     Version: 00.03
+ * Sat 2024-11-16 Rearranged the function process_makefile to a more concice top down way.              Version: 00.04
+ * Sat 2024-11-16 BugFix - in function process_makefile compiling with the -c flad didn't work.         Version: 00.05
+ * Sat 2024-11-16 Another BugFix - in the function process_makefile, adding .o ending when compiling    Version: 00.06
+ *                with the -c flag.
  * ------------------------------------------------------------------------------------------------------------------
  * To Do's:
  * ******************************************************************************************************************/
@@ -46,7 +50,7 @@
 void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 3);
+    Version v = create_version(0, 6);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -115,26 +119,6 @@ void print_help() {
 }
 
 /* ---------------------------------------------------------------------------------------------------------------
- * The execute_command function is a critical component of our custom "Make" program, designed to ensure reliable
- * execution of build commands. By leveraging this function, we provide robust error handling and immediate feedback,
- * enhancing the overall reliability and efficiency of the build process.
- *
- * The execute_command function exemplifies our commitment to delivering dependable and efficient solutions by
- * ensuring that every build command is executed correctly, and any failures are promptly addressed. This function is
- * indispensable for maintaining the integrity and seamless operation of our custom "Make" tool, driving productivity
- * and reliability.
- *
- * @param command A string representing the command to be executed.
- * --------------------------------------------------------------------------------------------------------------- */
-void execute_command(const char *command) {
-    int result = system(command);
-    if (result != 0) {
-        fprintf(stderr, "Command failed: %s\n", command);
-        exit(EXIT_FAILURE);
-    }
-}
-
-/* ---------------------------------------------------------------------------------------------------------------
  * The process_makefile function is a pivotal component of our custom "Make" program, designed to streamline the
  * build process by reading and executing commands from a specified makefile. This function ensures efficient
  * parsing and execution of build instructions, enhancing productivity and simplifying project management for
@@ -181,40 +165,40 @@ void process_makefile(const char *filename) {
     }
     
     fclose(file);
-    
-    // Generate the compilation command
-    char command[2000];
-    if (strcmp(target, "exec") == 0) {
-        if (src[0] == '\0') {
-            if (cflags[0] == '\0')
-                snprintf(command, sizeof(command), "%s %s.c %s -o %s", comp, project, libs, project);
-            else
-                snprintf(command, sizeof(command), "%s %s %s.c %s -o %s", comp, cflags, project, libs, project);
-        } else {
-            if (cflags[0] == '\0')
-                snprintf(command, sizeof(command), "%s %s %s -o %s", comp, src, libs, project);
-            else
-                snprintf(command, sizeof(command), "%s %s %s %s -o %s", comp, cflags, src, libs, project);
-        }
-    } else if (strcmp(target, "obj") == 0) {
-        if (src[0] == '\0') {
-            if (cflags[0] == '\0')
-                snprintf(command, sizeof(command), "%s -c %s.c", comp, project);
-            else
-                snprintf(command, sizeof(command), "%s %s -c %s.c", comp, cflags, project);
-        } else {
-            if (cflags[0] == '\0')
-                snprintf(command, sizeof(command), "%s -c %s -o %s.o", comp, src, project);
-            else
-                snprintf(command, sizeof(command), "%s %s -c %s -o %s.o", comp, cflags, src, project);
-        }
-    }
-    
+
+    char *command = NULL;
+
+    append_format(&command, "%s ", comp);
+
+    if(cflags[0] != '\0')
+        append_format(&command, "%s ", cflags);
+
+    if(target[0] != 'e')
+        append_format(&command, "-c ");
+
+    if(src[0] != '\0')
+        append_format(&command, "%s ", src);
+    else
+        append_format(&command, "%s.c ", project);
+
+    if(libs[0] != '\0')
+        append_format(&command, "%s ", libs);
+
+    if(target[0] != 'e')
+        append_format(&command, "-o %s.o", project);
+    else
+        append_format(&command, "-o %s", project);
+
     printf("Compiling command:\n");
     printf("%s\n", command);
 
     // Execute the command
-    execute_command(command);
+    int result = system(command);
+    
+    if (result != 0) {
+        fprintf(stderr, "Command failed: %s\n", command);
+        exit(EXIT_FAILURE);
+    }
 }
 
 /* ---------------------------------------------------------------------------------------------------------------
