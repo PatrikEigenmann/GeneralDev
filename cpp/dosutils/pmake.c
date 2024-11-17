@@ -27,8 +27,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "..\mylibs\cVersion.h"
-#include "..\mylibs\cManPage.h"
+#ifdef _WIN32
+    #include "..\mylibs\cVersion.h"
+    #include "..\mylibs\cManPage.h"
+#else
+    #include "../mylibs/cVersion.h"
+    #include "../mylibs/cManPage.h"
+#endif
 
 #define MAX_LINE_LENGTH 256
 
@@ -65,20 +70,24 @@ void print_help() {
     // Write the ManPage style help file.
     append_format(&manpage, "NAME\n");
     append_format(&manpage, "       pmake Version: %s\n", buffer);
-    append_format(&manpage, "       Our custom \"pmake\" program is designed to empower developers by streamlining\n");
-    append_format(&manpage, "       the build process with simplicity and efficiency. Tailored specifically for\n");
-    append_format(&manpage, "       flexibility, it reads configuration files, interprets instructions, and executes\n");
-    append_format(&manpage, "       commands to compile and build projects seamlessly. By offering an intuitive and\n");
-    append_format(&manpage, "       robust solution, our pmake program not only enhances productivity but also ensures\n");
-    append_format(&manpage, "       consistency across various development environments. This tool is an essential asset\n");
-    append_format(&manpage, "       for any development team, enabling faster turnaround times and improved project management.\n");
+    append_format(&manpage, "       Our custom \"pmake\" program is designed to empower developers by\n");
+    append_format(&manpage, "       streamlining the build process with simplicity and efficiency.\n");
+    append_format(&manpage, "       Tailored specifically for flexibility, it reads configuration files,\n");
+    append_format(&manpage, "       interprets instructions, and executes commands to compile and build\n");
+    append_format(&manpage, "       projects seamlessly. By offering an intuitive and robust solution,\n");
+    append_format(&manpage, "       our pmake program not only enhances productivity but also ensures\n");
+    append_format(&manpage, "       consistency across various development environments. This tool is\n");
+    append_format(&manpage, "       an essential asset for any development team, enabling faster\n");
+    append_format(&manpage, "       turnaround times and improved project management.\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "SYNOPSIS\n");
     append_format(&manpage, "       pmake <makefile>\n");
     append_format(&manpage, "       pmake <-h\\-help\\-H\\-Help>\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "DESCRIPTION\n");
-    append_format(&manpage, "       <makefile> The name of the makefile with the build instructions to be processed.\n");
+    append_format(&manpage, "       <makefile> The name of the makefile with the build instructions\n");
+    append_format(&manpage, "       to be processed.\n");
+    append_format(&manpage, "\n");
     append_format(&manpage, "           Example Makefile myproject.makefile:\n");
     append_format(&manpage, "           ---------------------------------------\n");
     append_format(&manpage, "           # Define the compiler and flags\n");

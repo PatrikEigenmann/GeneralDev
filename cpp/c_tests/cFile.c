@@ -77,7 +77,7 @@ int main (int argc, char **argv) {
 
     printf("Filename: %s\n", file);
 
-     if(_access("test.txt", 0) != 0) {
+     if(!doesFileExist("test.txt")) {
         
         printf("File doesn't exist! Writing it.\n");
         FILE *file = fopen("test.txt", "w");
@@ -101,7 +101,8 @@ int main (int argc, char **argv) {
         fclose(file);
     }
 
-    system("more test.txt");
+    strcat(command, " test.txt");
+    system(command);
     
     return 0;
 }
