@@ -25,4 +25,4 @@ project=pmake
 src=
 
 #Libraries to add, or already compiled .o files. Make sure they are properly included.
-libs=../mylibs/cVersion.o ../mylibs/cManPage.o
+libs=

@@ -7,7 +7,8 @@
  * management.
  *
  * Compile information:
- * gcc pmake.c ..\mylibs\cVersion.o ..\mylibs\cManPage.o -o pmake
+ * gcc pmake.c -o pmake or
+ * clang pmake.c -o pmake
  * -----------------------------------------------------------------------------------------------------------------
  * Author:       Patrik Eigenmann
  * eMail:        p.eigenmann@gmx.net
@@ -19,21 +20,306 @@
  * Sat 2024-11-16 BugFix - in function process_makefile compiling with the -c flad didn't work.         Version: 00.05
  * Sat 2024-11-16 Another BugFix - in the function process_makefile, adding .o ending when compiling    Version: 00.06
  *                with the -c flag.
+ * Tue 2024-11-19 For ease of compiling this project, I have included the functionallity from cVersion  Version: 00.07
+                  & cManPage directly into the code file pmake.c.
  * ------------------------------------------------------------------------------------------------------------------
  * To Do's:
+ * - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.
+ * - Take cManPage.h & cManPage.c appart and integrate it directly into this code base.
  * ******************************************************************************************************************/
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
+#include <ctype.h>
 
 #ifdef _WIN32
-    #include "..\mylibs\cVersion.h"
-    #include "..\mylibs\cManPage.h"
+    
+    // Include Windows relevant libraries
+    #include <io.h>
+    
+    #define _home() getenv("USERPROFILE")
+
+    /* --------------------------------------------------------------------------------------------------------
+     * Windows version:
+     * By encapsulating the file existence check within this method, we ensure a seamless and efficient way to
+     * verify the presence of files. This method not only enhances the maintainability and readability of your
+     * codebase, but also guarantees that file existence checks are performed consistently and reliably.
+     * 
+     * Adopting the doesFileExist method will streamline your file handling processes, fostering better
+     * organization and error handling, and ultimately contributing to a more robust and user-friendly product.
+     * 
+     * @param char *filename - The name of the file to check for existence.
+     * @return int - Returns 1 if the file exists, and 0 if it does not.
+     * -------------------------------------------------------------------------------------------------------- */
+    int doesFileExist(char *filename) {
+        return _access(filename, 0) != -1;
+    }
+    
+    // The command I use under Windows is more. More is the equivalent
+    // of the UNIX less command.
+    char command[255] = "more ";
+
+    char *PATH = "\\AppData\\Local\\";
 #else
-    #include "../mylibs/cVersion.h"
-    #include "../mylibs/cManPage.h"
+    // Include Unix relevant libraries
+    #include <unistd.h>
+
+    #define _home() getenv("HOME")
+
+    /* --------------------------------------------------------------------------------------------------------
+     * MacOS version:
+     * By encapsulating the file existence check within this method, we ensure a seamless and efficient way to
+     * verify the presence of files. This method not only enhances the maintainability and readability of your
+     * codebase, but also guarantees that file existence checks are performed consistently and reliably.
+     * 
+     * Adopting the doesFileExist method will streamline your file handling processes, fostering better
+     * organization and error handling, and ultimately contributing to a more robust and user-friendly product.
+     * 
+     * @param char *filename - The name of the file to check for existence.
+     * @return int - Returns 1 if the file exists, and 0 if it does not.
+     * -------------------------------------------------------------------------------------------------------- */
+    int doesFileExist(char *filename) {
+        return access(filename, F_OK) != -1;
+    }
+
+    // The command I use under MacOS/Unix is less. Less is the equivalent
+    // of the Windows more command.
+    char command[255] = "less ";
+
+    char *PATH = "/.local/share/";
 #endif
+
+/* *****************************************************************************************************************
+ * cVersion - This code was copied from cVersion so I have a more easier way to compile.
+ * ***************************************************************************************************************** */
+
+// ---------------------------------------------------------------------------------------------------------------
+// This structure as a small box labeled “Version”. Inside this box, there are two compartments. One compartment
+// is labeled “major”, and the other is labeled “minor”.
+//
+// These compartments can hold numbers. The number in the “major” compartment represents big changes or updates,
+// like a new design or a significant feature. The number in the “minor” compartment represents small changes or
+// updates, like a bug fix or a minor improvement.
+//
+// So, this “Version” box helps us keep track of both big and small updates in an organized way.
+// ---------------------------------------------------------------------------------------------------------------
+typedef struct {
+    int major;                              // Major built
+    int minor;                              // Minor built
+} Version;
+
+// ---------------------------------------------------------------------------------------------------------------
+// The create_version function is a set of instructions that takes two numbers as input. These numbers represent
+// the major and minor parts of a version number, respectively. The function then constructs a Version object
+// using these two numbers. The major and minor numbers are stored within this Version object. Once this Version
+// object is created, it is then returned by the function. This Version object can be used to represent and keep
+// track of the version number of a software or a product. The major part of the version usually indicates
+// significant changes or updates, while the minor part indicates smaller updates or bug fixes.
+//
+// @param int major - Major build number.
+// @param int minor - Minor build number.
+// ---------------------------------------------------------------------------------------------------------------
+Version create_version(int major, int minor) {
+    Version v;
+    v.major = major;
+    v.minor = minor;
+    return v;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// The get_major function is like a question you ask to the Version object. The question is: “What is your major
+// version number?”
+//
+// When you ask this question to a Version object (by calling get_major(v) where v is a Version object), it looks
+// inside itself, finds the “major” version number that was stored when it was created, and then gives (returns)
+// that number.
+//
+// So, in simple terms, get_major is a way to get the major version number from a Version object.
+// ---------------------------------------------------------------------------------------------------------------
+int get_major(Version v) {
+    return v.major;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// The get_minor function is like asking a Version object about its minor version number.
+//
+// When you call get_minor(v) where v is a Version object, you’re essentially asking, “What is your minor version
+// number?” In response to this question, the Version object checks its minor version number that was stored when
+// it was created, and then gives (returns) that number.
+//
+// So, in simple terms, get_minor is a way to retrieve the minor version number from a Version object.
+// ---------------------------------------------------------------------------------------------------------------
+int get_minor(Version v) {
+    return v.minor;
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// The to_string function is like a translator for the Version object.
+//
+// When you call to_string(v, buffer) where v is a Version object and buffer is a space in memory to store a string,
+// you’re essentially asking, “Can you translate your version number into a string format?”
+//
+// In response to this request, the Version object takes its major and minor version numbers, formats them into a
+// string that looks like “MM.mm” (where MM is the major version number and mm is the minor version number), and then
+// stores this string in the provided buffer.
+//
+// So, in simple terms, to_string is a way to convert the version number of a Version object into a string format.
+// ---------------------------------------------------------------------------------------------------------------
+void to_string(Version v, char* buffer) {
+    sprintf(buffer, "%02d.%02d", v.major, v.minor);
+}
+
+/* *****************************************************************************************************************
+ * cManPage - This code was copied from cManPage so I have a more easier way to compile.
+ * ***************************************************************************************************************** */
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * The ManPage struct is a crucial data structure designed to streamline and enhance the management of manual
+ * pages within your applications. It encapsulates all the necessary details of a manual page, including the
+ * filename and its corresponding content, into a single, organized unit. This structured approach not only
+ * simplifies the creation and modification of documentation but also ensures that your manual pages are
+ * consistently and efficiently handled across different platforms.
+ * 
+ * By leveraging the ManPage struct, your development team can achieve greater efficiency, maintainability, and
+ * clarity in managing application documentation, ultimately contributing to a more robust and user-friendly
+ * software experience.
+ * --------------------------------------------------------------------------------------------------------------- */
+typedef struct {
+    char *filename;
+    char *manual;
+} ManPage;
+
+const char *FILE_EXTENTION = ".man";
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the process of appending formatted content within this method, we ensure a seamless and
+ * efficient way to dynamically build strings. This method not only enhances the maintainability and readability
+ * of your codebase, but also guarantees that formatted content is appended consistently and effectively.
+ * 
+ * Adopting the append_format method will streamline your string manipulation tasks, fostering better organization
+ * and flexibility, and ultimately contributing to a more polished and efficient product.
+ * 
+ * @param char **dest - The destination string to which formatted content will be appended.
+ * @param const char *format - The format string.
+ * @param ... - Additional arguments to format and append to the destination string.
+ * --------------------------------------------------------------------------------------------------------------- */
+void append_format(char **dest, const char *format, ...) {
+    va_list args;
+    va_start(args, format);
+    
+    va_list args_copy;
+    va_copy(args_copy, args);
+    int size = vsnprintf(NULL, 0, format, args_copy) + 1;
+    va_end(args_copy);
+
+    char *temp = malloc(size);
+    if (temp == NULL) {
+        perror("malloc failed");
+        va_end(args);
+        return;
+    }
+    
+    vsprintf(temp, format, args);
+    va_end(args);
+
+    if (*dest == NULL) {
+        *dest = malloc(size);
+        if (*dest == NULL) {
+            perror("malloc failed");
+            free(temp);
+            return;
+        }
+        strcpy(*dest, temp);
+    } else {
+        *dest = realloc(*dest, strlen(*dest) + size);
+        if (*dest == NULL) {
+            perror("realloc failed");
+            free(temp);
+            return;
+        }
+        strcat(*dest, temp);
+    }
+    
+    free(temp);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the creation of manual pages within this method, we ensure a seamless and efficient process
+ * for generating documentation. This not only enhances the maintainability and readability of your codebase, but
+ * also guarantees that manual pages are consistently formatted and easily accessible.
+ * 
+ * Adopting the create_manpage method will streamline your documentation process, fostering better organization
+ * and accessibility, and ultimately contributing to a more polished and user-friendly product.
+ * 
+ * @param char *filenameIn - The filename to the ManPage text file.
+ * @param char *manualIn - The content of the ManPage text.
+ * --------------------------------------------------------------------------------------------------------------- */
+void create_manpage(char *filenameIn, char *manualIn) {
+
+    ManPage mp;
+
+    mp.filename = NULL;
+    append_format(&mp.filename, _home());
+    append_format(&mp.filename, PATH);
+    append_format(&mp.filename, filenameIn);
+    append_format(&mp.filename, FILE_EXTENTION);
+
+    mp.manual = NULL;
+    append_format(&mp.manual, manualIn);
+
+    // if(!doesFileExist(mp.filename)) {
+        
+    FILE *file = fopen(mp.filename, "w");
+    
+    if (file == NULL) {
+        printf("Error opening file!\n");
+        return;
+    }
+
+    fprintf(file, "%s", mp.manual);
+
+    // Now we can close the file.
+    fclose(file);
+
+    // }
+
+    strcat(command, mp.filename);
+    system(command);
+}
+
+/* ---------------------------------------------------------------------------------------------------------------
+ * By encapsulating the detection of help command triggers within this method, we ensure a seamless and efficient
+ * way to handle user requests for help or usage information. This method not only enhances the maintainability
+ * and readability of your codebase but also guarantees that help commands are consistently and accurately
+ * recognized.
+ * 
+ * Adopting the isHelpTriggered method will streamline your application's user interaction processes, fostering
+ * better user experience and accessibility, and ultimately contributing to a more user-friendly product.
+ * 
+ * @param int argcIn - The number of command-line arguments.
+ * @param char *argvIn - The first string of the command-line arguments array.
+ * @return int - Returns 1 if the help command is triggered, and 0 otherwise.
+ * --------------------------------------------------------------------------------------------------------------- */
+int isHelpTriggered(int argcIn, char *argvIn) {
+    
+    /* ------------------------------------------------------- 
+     * Help / Manpage is trigger if program call are like:
+     *  - <program> or
+     *  - <program> -h or
+     *  - <program> -H or
+     *  - <program> -help or
+     *  - <program> -Help
+     * ------------------------------------------------------- */
+    return (argcIn == 1 ||
+        strcmp(argvIn, "-h") == 0 ||
+        strcmp(argvIn, "-H") == 0 ||
+        strcmp(argvIn, "-help") == 0 ||
+        strcmp(argvIn, "-Help") == 0);
+}
+
+/* ********************************************END INTEGRATION****************************************************** */
 
 #define MAX_LINE_LENGTH 256
 
@@ -55,7 +341,7 @@
 void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 6);
+    Version v = create_version(0, 7);
     
     // The buffer is needed to write
     // the correct formated version number.
