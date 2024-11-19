@@ -16,12 +16,10 @@ This command will check the network range from `192.168.1.1` to `192.168.1.254` 
 The `chkip.makefile` is a makefile designed for our cross-platform pmake tool. It provides specific compiler instructions to compile the `chkip.c` program.
 
 ## Installation
-To compile the `chkip` program, ensure you have our cross-platform pmake tool installed. Use the provided `chkip.makefile` to compile the program.
-
-pmake chkip.makefile
+To compile any tool within this folder, ensure you have our cross-platform pmake tool installed. Each tool has its own makefile which provides specific compiler instructions. Use the corresponding makefile to compile the tool.
 
 ## Contributing
 If you have any network utilities or enhancements you'd like to add to this collection, please feel free to submit a pull request. Contributions are welcome!
 
 ## License
-This project is licensed under the GNU General Public License. See the [LICENSE](../LICENSE) file for more details.
+This project is licensed under the GNU General Public License. See the LICENSE file for more details.
