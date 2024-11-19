@@ -27,6 +27,7 @@
  * Wed 2024-11-06 Changed wild card because in Unix, the wild card '*' causes an error.             Version: 00.12
  * Thu 2024-11-07 Changed things around, because under Unix things don't work quite right.          Version: 00.13
  * Fri 2024-11-07 Small changes because unter Unix the things are different.                        Version: 00.14
+ * Tue 2024-11-19 Bugfix under Unix, ping doesn't result in "Reply from".                           Version: 00.15
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -69,7 +70,7 @@ const int IP_MAX = 254;
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 14);
+    Version v = create_version(0, 15);
         
     // The buffer is needed to write
     // the correct formated version number.
@@ -84,13 +85,13 @@ void print_help() {
     // Write the ManPage style help file.
     append_format(&manpage, "NAME\n");
     append_format(&manpage, "      chkip Version: %s\n", buffer);
-    append_format(&manpage, "      Our cutting-edge program efficiently pings and identifies online\n");
-    append_format(&manpage, "      IP addresses within a specified range. It dynamically updates the\n");
-    append_format(&manpage, "      user on the progress, ensuring a seamless and transparent experience.\n");
-    append_format(&manpage, "      The results are presented in a visually structured table, accommodating\n");
-    append_format(&manpage, "      varying IP address lengths for utmost clarity. This tool is integral\n");
-    append_format(&manpage, "      for network administrators, enhancing the accuracy and speed of network\n");
-    append_format(&manpage, "      diagnostics and management.\n");
+    append_format(&manpage, "      Our cutting-edge cross-platform program efficiently pings and\n");
+    append_format(&manpage, "      identifies online IP addresses within a specified range. It\n");
+    append_format(&manpage, "      dynamically updates the user on the progress, ensuring a seamless\n");
+    append_format(&manpage, "      and transparent experience. The results are presented in a visually\n");
+    append_format(&manpage, "      structured table, accommodating varying IP address lengths for utmost\n");
+    append_format(&manpage, "      clarity. This tool is integral for network administrators, enhancing the\n");
+    append_format(&manpage, "      accuracy and speed of network diagnostics and management.\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "SYNOPSIS\n");
     append_format(&manpage, "      chkip <IP ADDRESS with ? as the wildcard>\n");
@@ -175,7 +176,7 @@ int ping_ip(const char *ip) {
     char result[100];
     int is_online = 0;
     while (fgets(result, sizeof(result), fp) != NULL) {
-        if (strstr(result, "Reply from") != NULL) {
+        if (strstr(result, "1 packets received") != NULL) {
             is_online = 1;
             break;
         }
