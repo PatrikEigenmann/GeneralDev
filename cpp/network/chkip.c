@@ -28,6 +28,7 @@
  * Thu 2024-11-07 Changed things around, because under Unix things don't work quite right.          Version: 00.13
  * Fri 2024-11-07 Small changes because unter Unix the things are different.                        Version: 00.14
  * Tue 2024-11-19 Bugfix under Unix, ping doesn't result in "Reply from".                           Version: 00.15
+ * Tue 2024-11-19 Bugfix under Windows, ping doesn't result in "1 packets received".                Version: 00.16
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -70,7 +71,7 @@ const int IP_MAX = 254;
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 15);
+    Version v = create_version(0, 16);
         
     // The buffer is needed to write
     // the correct formated version number.
@@ -176,11 +177,19 @@ int ping_ip(const char *ip) {
     char result[100];
     int is_online = 0;
     while (fgets(result, sizeof(result), fp) != NULL) {
+    #ifdef _WIN32
+        if (strstr(result, "Received = 1") != NULL) {
+            is_online = 1;
+            break;
+        }
+    #else
         if (strstr(result, "1 packets received") != NULL) {
             is_online = 1;
             break;
         }
+    #endif
     }
+
     pclose(fp);
     return is_online;
 }
