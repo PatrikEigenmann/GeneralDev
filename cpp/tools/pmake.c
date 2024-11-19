@@ -24,8 +24,8 @@
                   & cManPage directly into the code file pmake.c.
  * ------------------------------------------------------------------------------------------------------------------
  * To Do's:
- * - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.
- * - Take cManPage.h & cManPage.c appart and integrate it directly into this code base.
+ * - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.                         Done.
+ * - Take cManPage.h & cManPage.c appart and integrate it directly into this code base.                         Done.
  * ******************************************************************************************************************/
 
 #include <stdio.h>
