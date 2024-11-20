@@ -1,6 +1,14 @@
-# mf_pmake for pmake
-
-# Compiler
+# ------------------------------------------------------------------------------------
+# Makefile for the project pmake. Compile instruction to compile the c project.
+# make -f mf_pmake -> will compile the project.
+# ------------------------------------------------------------------------------------
+# Author: Patrik Eigenmann (p.eigenmann@gmx.net)
+# ------------------------------------------------------------------------------------
+# Change Log:
+# Sat 2024-11-16 File created.                                          Version: 00.01
+# Sun 2024-11-17 Changed the configuration to fit the project.          Version: 00.02
+# ------------------------------------------------------------------------------------
+# Which compiler is in use.
 CC = gcc
 
 # Compiler flags

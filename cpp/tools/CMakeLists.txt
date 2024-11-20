@@ -1,3 +1,13 @@
+# ------------------------------------------------------------------------------------
+# Makefile for the project pmake. Compile instruction to compile the c project.
+# cmake will compile the project pmake.
+# ------------------------------------------------------------------------------------
+# Author: Patrik Eigenmann (p.eigenmann@gmx.net)
+# ------------------------------------------------------------------------------------
+# Change Log:
+# Sat 2024-11-16 File created.                                          Version: 00.01
+# Sun 2024-11-17 Changed the configuration to fit the project.          Version: 00.02
+# ------------------------------------------------------------------------------------
 # Minimum required version of CMake
 cmake_minimum_required(VERSION 3.0)
 

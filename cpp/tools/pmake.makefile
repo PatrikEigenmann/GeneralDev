@@ -1,5 +1,6 @@
 # ------------------------------------------------------------------------------------
-# Makefile for the project cpmake. Compile instruction to compile the c project.
+# Makefile for the project pmake. Compile instruction to compile the c project.
+# pmake pmake.makefile will compile the project pmake.
 # ------------------------------------------------------------------------------------
 # Author: Patrik Eigenmann (p.eigenmann@gmx.net)
 # ------------------------------------------------------------------------------------
