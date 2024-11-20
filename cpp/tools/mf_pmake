@@ -1,0 +1,23 @@
+# mf_pmake for pmake
+
+# Compiler
+CC = gcc
+
+# Compiler flags
+CFLAGS = -Wall -Wextra -std=c11
+
+# Source files
+SRCS = pmake.c
+
+# Output executable
+TARGET = pmake
+
+# Default target
+all: $(TARGET)
+
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
+
+# Clean target
+clean:
+	rm -f $(TARGET)
