@@ -21,7 +21,7 @@
  * Sat 2024-11-16 Another BugFix - in the function process_makefile, adding .o ending when compiling    Version: 00.06
  *                with the -c flag.
  * Tue 2024-11-19 For ease of compiling this project, I have included the functionallity from cVersion  Version: 00.07
-                  & cManPage directly into the code file pmake.c.
+ *                & cManPage directly into the code file pmake.c.
  * ------------------------------------------------------------------------------------------------------------------
  * To Do's:
  * - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.                         Done.
@@ -91,6 +91,8 @@
     char *PATH = "/.local/share/";
 #endif
 
+/* ********************************************START INTEGRATION**************************************************** */
+
 /* *****************************************************************************************************************
  * cVersion - This code was copied from cVersion so I have a more easier way to compile.
  * ***************************************************************************************************************** */
@@ -126,33 +128,6 @@ Version create_version(int major, int minor) {
     v.major = major;
     v.minor = minor;
     return v;
-}
-
-// ---------------------------------------------------------------------------------------------------------------
-// The get_major function is like a question you ask to the Version object. The question is: “What is your major
-// version number?”
-//
-// When you ask this question to a Version object (by calling get_major(v) where v is a Version object), it looks
-// inside itself, finds the “major” version number that was stored when it was created, and then gives (returns)
-// that number.
-//
-// So, in simple terms, get_major is a way to get the major version number from a Version object.
-// ---------------------------------------------------------------------------------------------------------------
-int get_major(Version v) {
-    return v.major;
-}
-
-// ---------------------------------------------------------------------------------------------------------------
-// The get_minor function is like asking a Version object about its minor version number.
-//
-// When you call get_minor(v) where v is a Version object, you’re essentially asking, “What is your minor version
-// number?” In response to this question, the Version object checks its minor version number that was stored when
-// it was created, and then gives (returns) that number.
-//
-// So, in simple terms, get_minor is a way to retrieve the minor version number from a Version object.
-// ---------------------------------------------------------------------------------------------------------------
-int get_minor(Version v) {
-    return v.minor;
 }
 
 // ---------------------------------------------------------------------------------------------------------------

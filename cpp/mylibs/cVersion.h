@@ -24,6 +24,7 @@
  * ---------------------------------------------------------------------------------------------------------------
  * Sun 2024-02-11 File created.                                                                     Version: 00.01
  * Sat 2024-10-26 #include <stdlib.h> removed.                                                      Version: 00.02
+ * Thu 2024-11-21 int get_major & int get_minor removed due to not using these methods at all.      Version: 00.03
  * ***************************************************************************************************************/
 #ifndef CVERSION_H
 #define CVERSION_H
@@ -55,29 +56,6 @@ typedef struct {
 // @param int minor - Minor build number.
 // ---------------------------------------------------------------------------------------------------------------
 Version create_version(int major, int minor);
-
-// ---------------------------------------------------------------------------------------------------------------
-// The get_major function is like a question you ask to the Version object. The question is: “What is your major
-// version number?”
-//
-// When you ask this question to a Version object (by calling get_major(v) where v is a Version object), it looks
-// inside itself, finds the “major” version number that was stored when it was created, and then gives (returns)
-// that number.
-//
-// So, in simple terms, get_major is a way to get the major version number from a Version object.
-// ---------------------------------------------------------------------------------------------------------------
-int get_major(Version v);
-
-// ---------------------------------------------------------------------------------------------------------------
-// The get_minor function is like asking a Version object about its minor version number.
-//
-// When you call get_minor(v) where v is a Version object, you’re essentially asking, “What is your minor version
-// number?” In response to this question, the Version object checks its minor version number that was stored when
-// it was created, and then gives (returns) that number.
-//
-// So, in simple terms, get_minor is a way to retrieve the minor version number from a Version object.
-// ---------------------------------------------------------------------------------------------------------------
-int get_minor(Version v);
 
 // ---------------------------------------------------------------------------------------------------------------
 // The to_string function is like a translator for the Version object.

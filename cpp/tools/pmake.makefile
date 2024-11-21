@@ -9,8 +9,8 @@
 # Sun 2024-11-17 Changed the configuration to fit the project.          Version: 00.02
 # ------------------------------------------------------------------------------------
 #The compiler used to compile the project. Common compilers used Windows gcc, and MacOS clang.
-comp=gcc
-#comp=clang
+#comp=gcc
+comp=clang
 
 #If the project needs to be compile with specific compiler flags (optional).
 cflags=

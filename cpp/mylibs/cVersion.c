@@ -62,9 +62,9 @@ Version create_version(int major, int minor) {
 //
 // So, in simple terms, get_major is a way to get the major version number from a Version object.
 // ---------------------------------------------------------------------------------------------------------------
-int get_major(Version v) {
-    return v.major;
-}
+//int get_major(Version v) {
+//    return v.major;
+//}
 
 // ---------------------------------------------------------------------------------------------------------------
 // The get_minor function is like asking a Version object about its minor version number.
@@ -75,9 +75,9 @@ int get_major(Version v) {
 //
 // So, in simple terms, get_minor is a way to retrieve the minor version number from a Version object.
 // ---------------------------------------------------------------------------------------------------------------
-int get_minor(Version v) {
-    return v.minor;
-}
+//int get_minor(Version v) {
+//    return v.minor;
+//}
 
 // ---------------------------------------------------------------------------------------------------------------
 // The to_string function is like a translator for the Version object.
