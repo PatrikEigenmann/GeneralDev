@@ -378,7 +378,7 @@ void print_help() {
     append_format(&manpage, "           ---------------------------------------\n");
     append_format(&manpage, "           # Define the compiler and flags\n");
     append_format(&manpage, "           comp=gcc\n");
-    append_format(&manpage, "           cflags = -Wall -Wextra -std=c11 (optional)\n");
+    append_format(&manpage, "           cflags=-Wall -Wextra -std=c11 (optional)\n");
     append_format(&manpage, "\n");
     append_format(&manpage, "           # Define the target executable or object\\library files\n");
     append_format(&manpage, "           target=exec or\n");
