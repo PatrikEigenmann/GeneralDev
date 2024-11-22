@@ -47,6 +47,7 @@
  * Mon 2024-02-12 Version control implemented.                                      Version: 00.06
  * Mon 2024-02-12 Man page help made scrollable.                                    Version: 00.07
  * Mon 2024-11-05 cManPage.h implemented. Updates and Bugfixes.                     Version: 00.08
+ * Thu 2024-11-21 Updated create_manpage("cEnigma", mp.manpage, v.major, v.minor);  Version: 00.09
  * -----------------------------------------------------------------------------------------------
  * To Do's:
  * ***********************************************************************************************/
@@ -164,7 +165,7 @@ char decode(char ch, char* rotor) {
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 8);
+    Version v = create_version(0, 9);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -219,7 +220,7 @@ void print_help() {
     append_format(&manpage, "      There is NO WARRANTY, to the extent permitted by law.\n");
 
     // Create the manpage in the file /temp/cEnigma.man
-    create_manpage("cEnigma", manpage);
+    create_manpage("cEnigma", manpage, v.major, v.minor);
 
     // Free up the memory.
     free(manpage);
