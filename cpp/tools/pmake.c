@@ -22,10 +22,13 @@
  *                with the -c flag.
  * Tue 2024-11-19 For ease of compiling this project, I have included the functionallity from cVersion  Version: 00.07
  *                & cManPage directly into the code file pmake.c.
+ * Thu 2024-11-21 Updated the method doesFileExist(), first check if file exists, second check if it    Version: 00.08
+ *                is the same version.
  * ------------------------------------------------------------------------------------------------------------------
  * To Do's:
- * - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.                         Done.
- * - Take cManPage.h & cManPage.c appart and integrate it directly into this code base.                         Done.
+ * - Take cVersion.h & cVersion.c appart and integrate it directly into this code base.                             Done.
+ * - Take cManPage.h & cManPage.c appart and integrate it directly into this code base.                             Done.
+ * - Updated the method doesFileExists, checking first if the file really exist, then if it is the same version.    Done.
  * ******************************************************************************************************************/
 
 #include <stdio.h>
@@ -51,13 +54,18 @@
      * organization and error handling, and ultimately contributing to a more robust and user-friendly product.
      * 
      * @param char *filename - The name of the file to check for existence.
+     * @param int major - The major # of the verison number.
+     * @param int minor - The minor # of the version number.
      * @return int - Returns 1 if the file exists, and 0 if it does not.
      * -------------------------------------------------------------------------------------------------------- */
     int doesFileExist(char *filename, int major, int minor) {
 
+        // First check if the file even exist
         int i = (_access(filename, 0) != -1);
 
+        // If it does,
         if(i > 0) {
+            
             FILE *file;
             char *buffer;
             char version[100] = "\0";
@@ -398,7 +406,7 @@ int isHelpTriggered(int argcIn, char *argvIn) {
 void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 8);
+    Version v = create_version(0, 7);
     
     // The buffer is needed to write
     // the correct formated version number.
