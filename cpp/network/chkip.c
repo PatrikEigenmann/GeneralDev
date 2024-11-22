@@ -29,6 +29,7 @@
  * Fri 2024-11-07 Small changes because unter Unix the things are different.                        Version: 00.14
  * Tue 2024-11-19 Bugfix under Unix, ping doesn't result in "Reply from".                           Version: 00.15
  * Tue 2024-11-19 Bugfix under Windows, ping doesn't result in "1 packets received".                Version: 00.16
+ * Thu 2024-11-21 Updated to the new create_manpage("chkip", manpage, v.major, v.minor);            Version: 00.17
  * *************************************************************************************************************** */
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,7 +72,7 @@ const int IP_MAX = 254;
 void print_help() {
     
     // Version control implemented
-    Version v = create_version(0, 16);
+    Version v = create_version(0, 17);
         
     // The buffer is needed to write
     // the correct formated version number.
@@ -118,7 +119,7 @@ void print_help() {
     append_format(&manpage, "      There is NO WARRANTY, to the extent permitted by law.\n");
 
     // Create the manpage in the file /temp/chkip.man
-    create_manpage("chkip", manpage);
+    create_manpage("chkip", manpage, v.major, v.minor);
     
     // Free up the memory.
     free(manpage);
