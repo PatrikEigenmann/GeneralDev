@@ -13,11 +13,13 @@
  * Mon 2024-11-04 Fixed all bugs around the string concatination.                                   Version: 00.02
  * Mon 2024-11-05 Cross plattform implementation.                                                   Version: 00.03
  * Thu 2024-11-07 Take the check if the file exist away for now. Let's write it every time.         Version: 00.04
+ * Thu 2024-11-21 Added major and minor to the methodes.                                            Version: 00.05
  * ***************************************************************************************************************
  * To Do:
  * - The program checks if the particular manpage exist, if not it will write it. If it exist, it will just read
  *   it. That is incorrect, what if the content of the manpage changes? It should be rewritten if content changes
  *   are made.                                                                                      -> Temporary
+ * - doesFileExist methode is fixed, now I need to extensively test the method.                     -> Done
  * ***************************************************************************************************************/
 
 #include "cManPage.h"
@@ -46,8 +48,49 @@
      * @param char *filename - The name of the file to check for existence.
      * @return int - Returns 1 if the file exists, and 0 if it does not.
      * -------------------------------------------------------------------------------------------------------- */
-    int doesFileExist(char *filename) {
-        return _access(filename, 0) != -1;
+    int doesFileExist(char *filename, int major, int minor) {
+
+        int i = (_access(filename, 0) != -1);
+
+        if(i > 0) {
+            FILE *file;
+            char *buffer;
+            char version[100] = "\0";
+            long file_size;
+
+            // Open the file for reading
+            file = fopen(filename, "r");
+                        
+            // Determine the file size
+            fseek(file, 0, SEEK_END);
+            file_size = ftell(file);
+            rewind(file);
+            
+            // Allocate memory for the buffer
+            buffer = (char *)malloc(sizeof(char) * (file_size + 1));
+            
+            if (buffer == NULL) {
+                printf("Memory allocation failed.\n");
+                fclose(file);
+                return 1;
+            }
+            
+            // Read the file content into the buffer
+            fread(buffer, sizeof(char), file_size, file);
+            
+            // Null-terminate the string
+            buffer[file_size] = '\0';
+            
+            
+            // Close the file
+            fclose(file);
+
+            sprintf(version, "%02d.%02d", major, minor);
+
+            i &= (strstr(buffer, version) != NULL);
+        }
+
+        return i;
     }
     
     // The command I use under Windows is more. More is the equivalent
@@ -73,8 +116,49 @@
      * @param char *filename - The name of the file to check for existence.
      * @return int - Returns 1 if the file exists, and 0 if it does not.
      * -------------------------------------------------------------------------------------------------------- */
-    int doesFileExist(char *filename) {
-        return access(filename, F_OK) != -1;
+    int doesFileExist(char *filename, int major, int minor) {
+
+        int i = (access(filename, F_OK) != -1);
+
+        if(i > 0) {
+            FILE *file;
+            char *buffer;
+            char version[100] = "\0";
+            long file_size;
+
+            // Open the file for reading
+            file = fopen(filename, "r");
+                        
+            // Determine the file size
+            fseek(file, 0, SEEK_END);
+            file_size = ftell(file);
+            rewind(file);
+            
+            // Allocate memory for the buffer
+            buffer = (char *)malloc(sizeof(char) * (file_size + 1));
+            
+            if (buffer == NULL) {
+                printf("Memory allocation failed.\n");
+                fclose(file);
+                return 1;
+            }
+            
+            // Read the file content into the buffer
+            fread(buffer, sizeof(char), file_size, file);
+            
+            // Null-terminate the string
+            buffer[file_size] = '\0';
+            
+            
+            // Close the file
+            fclose(file);
+
+            sprintf(version, "%02d.%02d", major, minor);
+
+            i &= (strstr(buffer, version) != NULL);
+        }
+
+        return i; 
     }
 
     // The command I use under MacOS/Unix is less. Less is the equivalent
@@ -97,7 +181,7 @@ const char *FILE_EXTENTION = ".man";
  * @param char *filenameIn - The filename to the ManPage text file.
  * @param char *manualIn - The content of the ManPage text.
  * --------------------------------------------------------------------------------------------------------------- */
-void create_manpage(char *filenameIn, char *manualIn) {
+void create_manpage(char *filenameIn, char *manualIn, int major, int minor) {
 
     ManPage mp;
 
@@ -110,7 +194,7 @@ void create_manpage(char *filenameIn, char *manualIn) {
     mp.manual = NULL;
     append_format(&mp.manual, manualIn);
 
-    // if(!doesFileExist(mp.filename)) {
+    if(!doesFileExist(mp.filename, major, minor)) {
         
     FILE *file = fopen(mp.filename, "w");
     
@@ -124,7 +208,7 @@ void create_manpage(char *filenameIn, char *manualIn) {
     // Now we can close the file.
     fclose(file);
 
-    // }
+    }
 
     strcat(command, mp.filename);
     system(command);

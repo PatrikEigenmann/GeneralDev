@@ -53,8 +53,49 @@
      * @param char *filename - The name of the file to check for existence.
      * @return int - Returns 1 if the file exists, and 0 if it does not.
      * -------------------------------------------------------------------------------------------------------- */
-    int doesFileExist(char *filename) {
-        return _access(filename, 0) != -1;
+    int doesFileExist(char *filename, int major, int minor) {
+
+        int i = (_access(filename, 0) != -1);
+
+        if(i > 0) {
+            FILE *file;
+            char *buffer;
+            char version[100] = "\0";
+            long file_size;
+
+            // Open the file for reading
+            file = fopen(filename, "r");
+                        
+            // Determine the file size
+            fseek(file, 0, SEEK_END);
+            file_size = ftell(file);
+            rewind(file);
+            
+            // Allocate memory for the buffer
+            buffer = (char *)malloc(sizeof(char) * (file_size + 1));
+            
+            if (buffer == NULL) {
+                printf("Memory allocation failed.\n");
+                fclose(file);
+                return 1;
+            }
+            
+            // Read the file content into the buffer
+            fread(buffer, sizeof(char), file_size, file);
+            
+            // Null-terminate the string
+            buffer[file_size] = '\0';
+            
+            
+            // Close the file
+            fclose(file);
+
+            sprintf(version, "%02d.%02d", major, minor);
+
+            i &= (strstr(buffer, version) != NULL);
+        }
+
+        return i;
     }
     
     // The command I use under Windows is more. More is the equivalent
@@ -80,8 +121,49 @@
      * @param char *filename - The name of the file to check for existence.
      * @return int - Returns 1 if the file exists, and 0 if it does not.
      * -------------------------------------------------------------------------------------------------------- */
-    int doesFileExist(char *filename) {
-        return access(filename, F_OK) != -1;
+    int doesFileExist(char *filename, int major, int minor) {
+
+        int i = (access(filename, F_OK) != -1);
+
+        if(i > 0) {
+            FILE *file;
+            char *buffer;
+            char version[100] = "\0";
+            long file_size;
+
+            // Open the file for reading
+            file = fopen(filename, "r");
+                        
+            // Determine the file size
+            fseek(file, 0, SEEK_END);
+            file_size = ftell(file);
+            rewind(file);
+            
+            // Allocate memory for the buffer
+            buffer = (char *)malloc(sizeof(char) * (file_size + 1));
+            
+            if (buffer == NULL) {
+                printf("Memory allocation failed.\n");
+                fclose(file);
+                return 1;
+            }
+            
+            // Read the file content into the buffer
+            fread(buffer, sizeof(char), file_size, file);
+            
+            // Null-terminate the string
+            buffer[file_size] = '\0';
+            
+            
+            // Close the file
+            fclose(file);
+
+            sprintf(version, "%02d.%02d", major, minor);
+
+            i &= (strstr(buffer, version) != NULL);
+        }
+
+        return i; 
     }
 
     // The command I use under MacOS/Unix is less. Less is the equivalent
@@ -231,7 +313,7 @@ void append_format(char **dest, const char *format, ...) {
  * @param char *filenameIn - The filename to the ManPage text file.
  * @param char *manualIn - The content of the ManPage text.
  * --------------------------------------------------------------------------------------------------------------- */
-void create_manpage(char *filenameIn, char *manualIn) {
+void create_manpage(char *filenameIn, char *manualIn, int major, int minor) {
 
     ManPage mp;
 
@@ -244,21 +326,21 @@ void create_manpage(char *filenameIn, char *manualIn) {
     mp.manual = NULL;
     append_format(&mp.manual, manualIn);
 
-    // if(!doesFileExist(mp.filename)) {
+    if(!doesFileExist(mp.filename, major, minor)) {
         
-    FILE *file = fopen(mp.filename, "w");
+        FILE *file = fopen(mp.filename, "w");
     
-    if (file == NULL) {
-        printf("Error opening file!\n");
-        return;
+        if (file == NULL) {
+            printf("Error opening file!\n");
+            return;
+        }
+
+        fprintf(file, "%s", mp.manual);
+
+        // Now we can close the file.
+        fclose(file);
+
     }
-
-    fprintf(file, "%s", mp.manual);
-
-    // Now we can close the file.
-    fclose(file);
-
-    // }
 
     strcat(command, mp.filename);
     system(command);
@@ -316,7 +398,7 @@ int isHelpTriggered(int argcIn, char *argvIn) {
 void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 7);
+    Version v = create_version(0, 8);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -382,7 +464,7 @@ void print_help() {
     append_format(&manpage, "      There is NO WARRANTY, to the extent permitted by law.\n");
 
     // Create the manpage in the file
-    create_manpage("pmake", manpage);
+    create_manpage("pmake", manpage, v.major, v.minor);
 
     // Free up the memory.
     free(manpage);

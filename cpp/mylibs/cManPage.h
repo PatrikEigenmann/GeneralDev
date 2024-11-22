@@ -42,7 +42,7 @@ typedef struct {
  * @param char *filenameIn - The filename to the ManPage text file.
  * @param char *manualIn - The content of the ManPage text.
  * --------------------------------------------------------------------------------------------------------------- */
-void create_manpage(char *filenameIn, char *manualIn);
+void create_manpage(char *filenameIn, char *manualIn, int major, int minor);
 
 /* ---------------------------------------------------------------------------------------------------------------
  * By encapsulating the process of appending formatted content within this method, we ensure a seamless and
@@ -69,7 +69,7 @@ void append_format(char **dest, const char *format, ...);
  * @param char *filename - The name of the file to check for existence.
  * @return int - Returns 1 if the file exists, and 0 if it does not.
  * --------------------------------------------------------------------------------------------------------------- */
-int doesFileExist(char *filename);
+int doesFileExist(char *filename, int major, int minor);
 
 /* ---------------------------------------------------------------------------------------------------------------
  * By encapsulating the detection of help command triggers within this method, we ensure a seamless and efficient
