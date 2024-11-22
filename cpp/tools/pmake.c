@@ -65,7 +65,7 @@
 
         // If it does,
         if(i > 0) {
-            
+
             FILE *file;
             char *buffer;
             char version[100] = "\0";
@@ -406,7 +406,7 @@ int isHelpTriggered(int argcIn, char *argvIn) {
 void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 7);
+    Version v = create_version(0, 8);
     
     // The buffer is needed to write
     // the correct formated version number.
