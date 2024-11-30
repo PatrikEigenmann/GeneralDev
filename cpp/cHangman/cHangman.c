@@ -19,6 +19,7 @@
  * -------------------------------------------------------------------------------------------------------------------
  * Sat 2024-11-23 File created.                                                                         Version: 00.01
  * Mon 2024-11-25 Integrated mylibs.                                                                    Version: 00.02
+ * Tue 2024-11-26 Small bug, the program read only first 100 words from the file.                       Version: 00.03
  * -------------------------------------------------------------------------------------------------------------------
  * To Do's:
  * ********************************************************************************************************************/
@@ -57,7 +58,7 @@
 void print_help() {
 
     // Version control implemented
-    Version v = create_version(0, 2);
+    Version v = create_version(0, 3);
     
     // The buffer is needed to write
     // the correct formated version number.
@@ -193,8 +194,8 @@ int main (int argc, char **argv) {
     }
 
     const char *filename = "words.txt";
-    char words[100][50];
-    int wordCount = loadWords(filename, words, 100);
+    char words[1500][50];
+    int wordCount = loadWords(filename, words, 1500);
 
     if (wordCount == 0) {
         printf("No words found in file.\n");
