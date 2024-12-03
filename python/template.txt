@@ -1,1 +1,0 @@
-Hello {{param1}} {{param2}} from {{param3}}!
